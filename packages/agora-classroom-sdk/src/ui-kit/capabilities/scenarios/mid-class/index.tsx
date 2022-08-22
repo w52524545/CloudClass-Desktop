@@ -23,7 +23,6 @@ import { StreamWindowsContainer } from '../../containers/stream-windows-containe
 export const MidClassScenario = () => {
   // layout
   const layoutCls = classnames('edu-room', 'big-class-room');
-  const { shareUIStore } = useStore();
 
   return (
     <Room>
