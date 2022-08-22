@@ -151,10 +151,10 @@ export class RemoteControlUIStore extends EduUIStoreBase {
             () => this.classroomStore.remoteControlStore.isHost,
             (isHost) => {
               if (isHost) {
-                //被授权控制老师屏幕
+                //被授权控制主持人屏幕
                 this.shareUIStore.addToast(transI18n('fcr_share_authorized_control'));
               } else {
-                //取消授权控制老师屏幕
+                //取消授权控制主持人屏幕
                 this.shareUIStore.addToast(transI18n('fcr_share_forbidden_control'), 'warning');
               }
             },
@@ -165,7 +165,7 @@ export class RemoteControlUIStore extends EduUIStoreBase {
             () => this.classroomStore.remoteControlStore.isControlled,
             (isControlled) => {
               if (!isControlled) {
-                //老师取消控制学生屏幕
+                //主持人取消控制观众屏幕
                 this.shareUIStore.addToast(transI18n('fcr_share_stopped_student_share'));
               }
             },

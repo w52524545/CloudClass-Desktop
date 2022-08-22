@@ -114,9 +114,9 @@ export class WidgetChatUIStore {
           if (!this.coreStore.messageStore.newMessageFlag) return;
           const { role } = this.classroomConfig.sessionInfo;
           let shoudleUpdate = false;
-          if (role === EduRoleTypeEnum.student && this.activeTab === 'room') shoudleUpdate = true; // 当学生在 room tab 的更新
+          if (role === EduRoleTypeEnum.student && this.activeTab === 'room') shoudleUpdate = true; // 当观众在 room tab 的更新
           if (role === EduRoleTypeEnum.teacher || role === EduRoleTypeEnum.assistant)
-            shoudleUpdate = true; // 当为老师或者助教时都需要处理
+            shoudleUpdate = true; // 当为主持人或者助教时都需要处理
 
           if (shoudleUpdate) {
             list.forEach((value: Conversation) => {
@@ -130,7 +130,7 @@ export class WidgetChatUIStore {
                   messageLength,
                 ]);
               }
-              // 当老师在当前的用户列表驻留时，更新为全部已读
+              // 当主持人在当前的用户列表驻留时，更新为全部已读
               if (this.activeConversation?.userUuid === value.userUuid) {
                 this.setUnreadConversationMap(value.userUuid, [messageLength, messageLength]);
               }

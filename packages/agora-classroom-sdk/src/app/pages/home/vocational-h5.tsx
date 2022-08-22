@@ -224,7 +224,7 @@ export const VocationalHomeH5Page = observer(() => {
             curScenario,
             // @ts-ignore
             userRole,
-            // startTime: Date.now(), // 开启后会导致学生进入新教室的时候直接开启上课计时
+            // startTime: Date.now(), // 开启后会导致观众进入新教室的时候直接开启开始会议计时
             region,
             duration: duration * 60,
             latencyLevel: 2,

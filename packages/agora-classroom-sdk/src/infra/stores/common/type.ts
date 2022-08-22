@@ -24,11 +24,11 @@ export enum CameraPlaceholderType {
    */
   disabled = 'disabled',
   /**
-   * 老师不在教室
+   * 主持人不在教室
    */
   notpresent = 'notpresent',
   /**
-   * 老师摄像头占位符（大小窗场景）
+   * 主持人摄像头占位符（大小窗场景）
    */
   nosetup = 'nosetup',
 }
@@ -141,6 +141,8 @@ export enum ToolbarItemCategory {
   CloudStorage,
   Save,
   Hand,
+  ScreenShare,
+  whiteBoard,
 }
 
 export enum CabinetItemEnum {

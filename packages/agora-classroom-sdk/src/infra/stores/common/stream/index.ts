@@ -144,7 +144,7 @@ export class StreamUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师流信息列表
+   * 主持人流信息列表
    * @returns
    */
   @computed get teacherStreams(): Set<EduStreamUI> {
@@ -188,7 +188,7 @@ export class StreamUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生流信息列表
+   * 观众流信息列表
    * @returns
    */
   @computed get studentStreams(): Set<EduStreamUI> {
@@ -210,7 +210,7 @@ export class StreamUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师流信息（教室内只有一个老师时使用，如果有一个以上老师请使用 teacherStreams）
+   * 主持人流信息（教室内只有一个主持人时使用，如果有一个以上主持人请使用 teacherStreams）
    * @returns
    */
   @computed get teacherCameraStream(): EduStreamUI | undefined {
@@ -220,7 +220,7 @@ export class StreamUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生流信息（教室内只有一个学生时使用，如果有一个以上老师请使用 studentStreams）
+   * 观众流信息（教室内只有一个观众时使用，如果有一个以上主持人请使用 studentStreams）
    * @returns
    */
   @computed get studentCameraStream(): EduStreamUI | undefined {
@@ -230,13 +230,18 @@ export class StreamUIStore extends EduUIStoreBase {
   }
 
   @computed get screenShareStream(): EduStream | undefined {
+    try {
+      EduEventUICenter.shared.emitClassroomUIEvents(AgoraEduClassroomUIEvent.offStreamWindow); // stream window off event
+    } catch (e) {
+      this.shareUIStore.addGenericErrorDialog(e as AGError);
+    }
     const streamUuid = this.classroomStore.roomStore.screenShareStreamUuid as string;
     const stream = this.classroomStore.streamStore.streamByStreamUuid.get(streamUuid);
     return stream;
   }
 
   /**
-   * 老师屏幕共享流信息
+   * 主持人屏幕共享流信息
    * @returns
    */
   @computed get teacherScreenShareStream(): EduStreamUI | undefined {

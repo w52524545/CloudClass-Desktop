@@ -285,11 +285,11 @@ export const CarouselGroup = observer(
     gap: number;
   }) => {
     const fullWith = (videoWidth + gap) * carouselStreams.length - gap + 2;
-
+    const fullheight = innerHeight - videoHeight - gap - gap - 24;
     const width = useDebounce(carouselStreams.length ? fullWith : 0, ANIMATION_DELAY);
-
+    const height = useDebounce(carouselStreams.length ? fullheight : 0, ANIMATION_DELAY);
     return (
-      <TransitionGroup className="flex overflow-hidden" style={{ width }}>
+      <TransitionGroup className="overflow-auto" style={{ width: '100%', height }}>
         {carouselStreams.map((stream: EduStreamUI, idx: number) => {
           const style = {
             marginRight: idx === carouselStreams.length - 1 ? 0 : gap - 2,

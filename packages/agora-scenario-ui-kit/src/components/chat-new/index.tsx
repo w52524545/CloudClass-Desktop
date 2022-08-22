@@ -20,7 +20,7 @@ export interface ChatProps extends AffixProps {
    */
   conversations?: Conversation[];
   /**
-   * 是否对学生禁言
+   * 是否对观众禁言
    */
   canChatting?: boolean;
   /**

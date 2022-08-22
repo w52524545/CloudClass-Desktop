@@ -110,7 +110,7 @@ export interface FcrStateBar {
 }
 
 /**
- * 老师视频区配置
+ * 主持人视频区配置
  */
 export interface FcrTeacherVideo {
   get resetPosition(): FcrUIBaseProps;
@@ -118,7 +118,7 @@ export interface FcrTeacherVideo {
 }
 
 /**
- * 学生视频区配置
+ * 观众视频区配置
  */
 export interface FcrStudentVideo {
   get camera(): FcrUIBaseProps;

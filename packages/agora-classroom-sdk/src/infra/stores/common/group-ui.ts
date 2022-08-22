@@ -37,7 +37,7 @@ export class GroupUIStore extends EduUIStoreBase {
   private _groupNum = 0;
   private _dialogsMap = new Map();
 
-  MAX_USER_COUNT = 15; // 学生最大15人
+  MAX_USER_COUNT = 15; // 观众最大15人
 
   /**
    * 分组列表
@@ -109,7 +109,7 @@ export class GroupUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 获取学生所在组ID
+   * 获取观众所在组ID
    * @param userUuid
    */
   @bound
@@ -128,7 +128,7 @@ export class GroupUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 获取学生信息
+   * 获取观众信息
    * @param userUuid
    */
   @bound
@@ -137,7 +137,7 @@ export class GroupUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生列表
+   * 观众列表
    */
   @computed
   get students() {

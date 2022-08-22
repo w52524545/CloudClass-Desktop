@@ -67,12 +67,12 @@ export const unMuteUser = (userId) => {
   store?.getState().apis.removeUserMute(userId);
 };
 
-// 当前登陆ID，是否被禁言 --- 学生调用 返回 Boolean
+// 当前登陆ID，是否被禁言 --- 观众调用 返回 Boolean
 export const isMuted = () => {
   return store?.getState()?.room.isUserMute;
 };
 
-// 获取禁言列表 --- 老师调用  返回 userUuid 的数组
+// 获取禁言列表 --- 主持人调用  返回 userUuid 的数组
 export const getMuteList = () => {
   return store?.getState()?.room.muteList;
 };

@@ -3,8 +3,8 @@ import { Toast } from '~ui-kit';
 import { action, autorun, computed, observable, runInAction } from 'mobx';
 import { AgoraPolling } from '.';
 
-// 2 为老师或者助教出题阶段 只可老师或者助教可见
-// 1 为中间答题阶段，不同为老师或者助教和学生的权限问题
+// 2 为主持人或者助教出题阶段 只可主持人或者助教可见
+// 1 为中间答题阶段，不同为主持人或者助教和观众的权限问题
 // 0 为最后结果展示阶段
 
 type stagePanel = 0 | 1 | 2;

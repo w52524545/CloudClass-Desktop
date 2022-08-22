@@ -21,9 +21,9 @@ export enum IPCMessageType {
   HideControlBar = 'HideControlBar',
   // 关闭控制栏
   CloseControlBar = 'CloseControlBar',
-  //学生列表变更事件
+  //观众列表变更事件
   StudentListUpdated = 'StudentListUpdated',
-  //同步学生列表
+  //同步观众列表
   FetchStudentList = 'FetchStudentList',
   //取消屏幕分享&远程控制
   StopScreenShareAndRemoteControl = 'StopScreenShareAndRemoteControl',

@@ -344,10 +344,10 @@ export class NotificationUIStore extends EduUIStoreBase {
     if (classroomSchedule) {
       switch (state) {
         case ClassState.beforeClass:
-          //距离上课的时间
+          //距离开始会议的时间
           break;
         case ClassState.ongoing:
-          //距离下课的时间
+          //距离结束会议的时间
           this._checkMinutesThrough([5, 1], this.durationToClassEnd, (minutes) => {
             this.addClassStateNotification(ClassState.ongoing, minutes);
           });

@@ -168,7 +168,7 @@ export class InteractiveRoomStreamUIStore extends StreamUIStore {
     if (sessionInfo.role === EduRoleTypeEnum.teacher) {
       tools.push(this.localPodiumTool());
     }
-    // 如果当前为老师 并且 讲台存在的话显示移除图标
+    // 如果当前为主持人 并且 讲台存在的话显示移除图标
     if (sessionInfo.role === EduRoleTypeEnum.teacher && this.stageVisible) {
       tools.unshift(this.localOffAllStreamWindow());
     }

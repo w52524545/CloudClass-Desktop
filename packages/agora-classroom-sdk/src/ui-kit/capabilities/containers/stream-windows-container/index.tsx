@@ -21,7 +21,7 @@ const WindowContainer: FC = observer(({ children }) => {
   return (
     <div
       id="stream-window-container"
-      className="w-full absolute flex-shrink-0 bottom-0"
+      className="w-full absolute flex-shrink-0"
       style={{ height: boardUIStore.boardAreaHeight, pointerEvents: 'none' }}
       ref={measureRef}>
       {children}
@@ -38,8 +38,8 @@ export const StreamWindowsContainer = observer(() => {
     <WindowContainer>
       {needDragable
         ? streamWindows.map(([streamUuid, streamWindow]) => (
-          <DragableStreamWindow key={streamUuid} info={streamWindow} streamUuid={streamUuid} />
-        ))
+            <DragableStreamWindow key={streamUuid} info={streamWindow} streamUuid={streamUuid} />
+          ))
         : null}
       <TransitionStreamWindow streamWindows={streamWindows} streamsBounds={streamsBounds} />
     </WindowContainer>
@@ -62,7 +62,7 @@ export const TransitionStreamWindow = observer(
         stageVisible,
         draggingStreamUuid,
       },
-      streamUIStore: { allUIStreams }
+      streamUIStore: { allUIStreams },
     } = useStore();
 
     const calcInitPosition = (streamUuid: string) => {
@@ -137,8 +137,7 @@ export const TransitionStreamWindow = observer(
           ) : null}
         </animated.div>
       );
-    }
-    );
+    });
   },
 );
 
@@ -193,7 +192,7 @@ const DragableStreamWindow = observer(
         onDragStop={() => {
           // sent to server
           resetDraggingStreamUuid();
-          sendWigetDataToServer(streamUuid);
+          //sendWigetDataToServer(streamUuid);
         }}
         onResize={(e, direction, ref, delta, position) => {
           setToolbarVisible(false);
@@ -210,7 +209,7 @@ const DragableStreamWindow = observer(
         }}
         onResizeStop={() => {
           resetDraggingStreamUuid();
-          sendWigetDataToServer(streamUuid);
+          //sendWigetDataToServer(streamUuid);
         }}
         onMouseEnter={() => {
           setToolbarVisible(true);
@@ -219,16 +218,8 @@ const DragableStreamWindow = observer(
           setToolbarVisible(false);
         }}
         onClick={handleStreamWindowClick(stream)}
-        disableDragging={
-          stream
-            ? streamWindowLocked(stream)
-            : false
-        }
-        enableResizing={
-          stream
-            ? !streamWindowLocked(stream)
-            : true
-        }>
+        disableDragging={stream ? streamWindowLocked(stream) : false}
+        enableResizing={stream ? !streamWindowLocked(stream) : true}>
         <div
           style={{
             width: info.width,
@@ -236,8 +227,14 @@ const DragableStreamWindow = observer(
             minWidth: minRect.minWidth,
             minHeight: minRect.minHeight,
             background: 'transparent',
-          }} />
-        <StreamPlayerToolbar visible={toolbarVisible} stream={uiStream} placement={fullScreenToolbarPlacement} offset={fullScreenToolbarOffset} />
+          }}
+        />
+        <StreamPlayerToolbar
+          visible={toolbarVisible}
+          stream={uiStream}
+          placement={fullScreenToolbarPlacement}
+          offset={fullScreenToolbarOffset}
+        />
       </Rnd>
     ) : null;
   },

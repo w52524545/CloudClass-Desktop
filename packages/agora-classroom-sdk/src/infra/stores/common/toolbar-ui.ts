@@ -258,7 +258,7 @@ export class ToolbarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师流信息列表
+   * 主持人流信息列表
    * @returns
    */
   @computed get teacherStreams(): Set<EduStreamUI> {
@@ -279,7 +279,7 @@ export class ToolbarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师流信息（教室内只有一个老师时使用，如果有一个以上老师请使用 teacherStreams）
+   * 主持人流信息（教室内只有一个主持人时使用，如果有一个以上主持人请使用 teacherStreams）
    * @returns
    */
   @computed get teacherCameraStream(): EduStreamUI | undefined {
@@ -517,6 +517,89 @@ export class ToolbarUIStore extends EduUIStoreBase {
       case 'save':
         this._saveBoardSnapshot();
         break;
+      case 'screenShare':
+        /* try {
+          EduEventUICenter.shared.emitClassroomUIEvents(AgoraEduClassroomUIEvent.offStreamWindow); // stream window off event
+        } catch (e) {
+          this.shareUIStore.addGenericErrorDialog(e as AGError);
+        }*/
+        if (
+          AgoraRteEngineConfig.platform === AgoraRteRuntimePlatform.Electron &&
+          EduClassroomConfig.shared.sessionInfo.roomType !== EduRoomTypeEnum.RoomBigClass &&
+          EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher
+        ) {
+          if (this.isScreenSharing) {
+            if (this.classroomStore.remoteControlStore.isRemoteControlling) {
+              const isTeacher =
+                EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher;
+              const isTeacherControlStudent =
+                this.classroomStore.remoteControlStore.isHost && isTeacher;
+              if (isTeacherControlStudent) {
+                this.classroomStore.remoteControlStore.quitControlRequest();
+              } else {
+                this.classroomStore.remoteControlStore.unauthorizeStudentToControl();
+                this.classroomStore.mediaStore.stopScreenShareCapture();
+              }
+            } else {
+              this.classroomStore.mediaStore.stopScreenShareCapture();
+            }
+            return;
+          }
+          this.shareUIStore.addDialog(DialogCategory.ScreenShare, {
+            onOK: (screenShareType: ScreenShareRoleType) => {
+              if (screenShareType === ScreenShareRoleType.Teacher) {
+                this.startLocalScreenShare();
+              } else {
+                const studentList = this.classroomStore.userStore.studentList;
+                if (studentList.size <= 0)
+                  return this.shareUIStore.addToast(transI18n('fcr_share_no_student'), 'warning');
+                const canControlledStudentList =
+                  this.classroomStore.remoteControlStore.canControlledStudentList;
+
+                if (canControlledStudentList.size > 0) {
+                  const { list } = iterateMap(canControlledStudentList, {
+                    onMap: (_key, item) => item,
+                  });
+                  this.classroomStore.remoteControlStore.sendControlRequst(list[0]?.userUuid);
+                } else {
+                  this.shareUIStore.addToast(transI18n('fcr_share_device_no_support'), 'warning');
+                }
+              }
+            },
+          });
+        } else {
+          this.startLocalScreenShare();
+        }
+        break;
+      case 'whiteboard':
+        if (this.isWhiteboardOpening) {
+          this.shareUIStore.addConfirmDialog(
+            transI18n('toast.close_whiteboard'),
+            transI18n('toast.close_whiteboard_confirm'),
+            {
+              onOK: () => {
+                this.boardApi.disable();
+                EduEventUICenter.shared.emitClassroomUIEvents(
+                  AgoraEduClassroomUIEvent.toggleWhiteboard,
+                  true,
+                );
+              },
+            },
+          );
+        } else {
+          this.boardApi.enable();
+          EduEventUICenter.shared.emitClassroomUIEvents(
+            AgoraEduClassroomUIEvent.toggleWhiteboard,
+            false,
+          );
+
+          try {
+            EduEventUICenter.shared.emitClassroomUIEvents(AgoraEduClassroomUIEvent.offStreamWindow); // stream window off event
+          } catch (e) {
+            this.shareUIStore.addGenericErrorDialog(e as AGError);
+          }
+        }
+        break;
     }
   }
 
@@ -693,7 +776,7 @@ export class ToolbarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师工具栏工具列表
+   * 主持人工具栏工具列表
    * @returns
    */
   @computed
@@ -745,18 +828,17 @@ export class ToolbarUIStore extends EduUIStoreBase {
           icon: 'save-ghost',
           category: ToolbarItemCategory.Save,
         }),
-
         ToolbarItem.fromData({
-          value: 'cloud',
-          label: 'scaffold.cloud_storage',
-          icon: 'cloud',
-          category: ToolbarItemCategory.CloudStorage,
+          value: 'screenShare',
+          label: 'scaffold.screen_share',
+          icon: 'share-screen',
+          category: ToolbarItemCategory.ScreenShare,
         }),
         ToolbarItem.fromData({
-          value: 'tools',
-          label: 'scaffold.tools',
-          icon: 'tools',
-          category: ToolbarItemCategory.Cabinet,
+          value: 'whiteboard',
+          label: 'scaffold.whiteboard',
+          icon: 'whiteboard',
+          category: ToolbarItemCategory.whiteBoard,
         }),
         ToolbarItem.fromData({
           value: 'register',
@@ -781,10 +863,16 @@ export class ToolbarUIStore extends EduUIStoreBase {
     } else {
       _tools = [
         ToolbarItem.fromData({
-          value: 'tools',
-          label: 'scaffold.tools',
-          icon: 'tools',
-          category: ToolbarItemCategory.Cabinet,
+          value: 'screenShare',
+          label: 'scaffold.screen_share',
+          icon: 'share-screen',
+          category: ToolbarItemCategory.ScreenShare,
+        }),
+        ToolbarItem.fromData({
+          value: 'whiteboard',
+          label: 'scaffold.whiteboard',
+          icon: 'whiteboard',
+          category: ToolbarItemCategory.whiteBoard,
         }),
         ToolbarItem.fromData({
           value: 'register',
@@ -799,7 +887,7 @@ export class ToolbarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生工具栏工具列表
+   * 观众工具栏工具列表
    * @returns
    */
   @computed
@@ -811,6 +899,12 @@ export class ToolbarUIStore extends EduUIStoreBase {
     if (!mounted || !whiteboardAuthorized || this.classroomStore.remoteControlStore.isHost) {
       //allowed to view user list only if not granted
       return [
+        ToolbarItem.fromData({
+          value: 'screenShare',
+          label: 'scaffold.screen_share',
+          icon: 'share-screen',
+          category: ToolbarItemCategory.ScreenShare,
+        }),
         ToolbarItem.fromData({
           value: 'register',
           label: 'scaffold.register',
@@ -856,6 +950,12 @@ export class ToolbarUIStore extends EduUIStoreBase {
         label: 'scaffold.register',
         icon: 'register',
         category: ToolbarItemCategory.Roster,
+      }),
+      ToolbarItem.fromData({
+        value: 'screenShare',
+        label: 'scaffold.screen_share',
+        icon: 'share-screen',
+        category: ToolbarItemCategory.ScreenShare,
       }),
     ];
   }

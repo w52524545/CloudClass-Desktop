@@ -69,7 +69,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   //observables
   // @observable isRecording = false;
 
-  // 老师流是否在大窗中展示
+  // 主持人流是否在大窗中展示
   @observable teacherStreamWindow = false;
 
   // 是否显示share弹层
@@ -139,7 +139,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
    * camera --> camera 状态
    *
    * stage === true 那么控制摄像头开关
-   * stage === flase 控制老师窗口的展示和关闭
+   * stage === flase 控制主持人窗口的展示和关闭
    */
   @computed
   get localNavCameraOff() {
@@ -203,7 +203,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
       },
     };
 
-    // 合流转推场景&&学生角色
+    // 合流转推场景&&观众角色
     const isMixStreamCDNModelStudent =
       EduClassroomConfig.shared.sessionInfo.role !== EduRoleTypeEnum.teacher &&
       EduClassroomConfig.shared.sessionInfo.roomServiceType === EduRoomServiceTypeEnum.MixStreamCDN;
@@ -423,7 +423,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师所在房间
+   * 主持人所在房间
    */
   @computed
   get teacherGroupUuid() {
@@ -556,14 +556,31 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 是否为开始上课
+   * 是否为开始会议
    * @returns
    */
   @computed
   get isBeforeClass() {
     const sessionInfo = EduClassroomConfig.shared.sessionInfo;
     if (sessionInfo.role === EduRoleTypeEnum.teacher) {
-      return this.classState === ClassState.beforeClass;
+      return (
+        this.classState === undefined ||
+        this.classState === ClassState.beforeClass ||
+        this.classState === ClassState.ongoing
+      );
+    }
+    return false;
+  }
+
+  /**
+   * 是否为进行会议
+   * @returns
+   */
+  @computed
+  get IsOnClass() {
+    const sessionInfo = EduClassroomConfig.shared.sessionInfo;
+    if (sessionInfo.role === EduRoleTypeEnum.teacher) {
+      return this.classState === ClassState.ongoing;
     }
     return false;
   }
@@ -826,12 +843,15 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 开始上课
+   * 开始会议
    */
   @bound
   async startClass() {
     try {
-      await this.classroomStore.roomStore.updateClassState(ClassState.ongoing);
+      if (this.classState === ClassState.beforeClass)
+        await this.classroomStore.roomStore.updateClassState(ClassState.ongoing);
+      else if (this.classState === ClassState.ongoing)
+        await this.classroomStore.roomStore.updateClassState(ClassState.close);
     } catch (e) {
       this.shareUIStore.addGenericErrorDialog(e as AGError);
     }
@@ -862,7 +882,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 打开关闭老师的 streamWindow
+   * 打开关闭主持人的 streamWindow
    */
   _toggleStreamWindow() {
     EduEventUICenter.shared.emitClassroomUIEvents(
@@ -873,7 +893,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
 
   /**
    * stage === true 那么控制摄像头开关
-   * stage === flase 控制老师窗口的展示和关闭
+   * stage === flase 控制主持人窗口的展示和关闭
    */
   @bound
   private _toggleNavCamera() {
