@@ -216,12 +216,6 @@ export const StreamPlayer: FC<{
     setToolbarVisible(false);
   };
 
-  const { streamUIStore } = useInteractiveUIStores() as EduInteractiveUIClassStore;
-  const { teacherCameraStream } = streamUIStore;
-  const { classroomStore } = useStore();
-  const { startCarousel } = classroomStore.roomStore;
-  useEffect(() => {});
-
   return (
     <div
       className="fcr-stream-player-container"
@@ -291,9 +285,7 @@ export const CarouselGroup = observer(
     carouselStreams: EduStreamUI[];
     gap: number;
   }) => {
-    const fullWith = (videoWidth + gap) * carouselStreams.length - gap + 2;
     const fullheight = innerHeight - videoHeight - gap - gap - 24;
-    const width = useDebounce(carouselStreams.length ? fullWith : 0, ANIMATION_DELAY);
     const height = useDebounce(carouselStreams.length ? fullheight : 0, ANIMATION_DELAY);
     return (
       <TransitionGroup className="overflow-auto" style={{ width: '100%', height }}>
