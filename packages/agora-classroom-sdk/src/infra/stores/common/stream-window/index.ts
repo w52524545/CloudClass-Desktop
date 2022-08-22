@@ -1,3 +1,4 @@
+import { useStore } from '@/infra/hooks/ui-store';
 import { AgoraEduClassroomUIEvent, EduEventUICenter } from '@/infra/utils/event-center';
 import { extractUserStreams } from '@/infra/utils/extract';
 import {
@@ -96,11 +97,11 @@ export class StreamWindowUIStore extends EduUIStoreBase {
   }
 
   get streamDragable() {
-    return EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher;
+    return true; // EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher;
   }
 
   get needDragable() {
-    return EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher;
+    return true; // EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher;
   }
 
   /**
@@ -148,7 +149,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师流信息
+   * 主持人流信息
    * @returns
    */
   @computed
@@ -163,7 +164,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生流信息列表
+   * 观众流信息列表
    * @returns
    */
   @computed
@@ -325,7 +326,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
 
     // 如果结束了视频拖拽，并且鼠标在区域内，那么更新位置到远端
     if (!active && this._isMatchWindowContainer(pos[0], pos[1])) {
-      this.sendWigetDataToServer(streamUuid);
+      //this.sendWigetDataToServer(streamUuid);
     }
   };
 
@@ -651,7 +652,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
           }
         });
       }
-      this.sendWigetDataToServer();
+      // this.sendWigetDataToServer();
 
       return;
     }
@@ -726,7 +727,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
     const delay = 250;
     return () => {
       if (EduClassroomConfig.shared.sessionInfo.role !== EduRoleTypeEnum.teacher) {
-        return;
+        //return;
       }
 
       if (!timeoutID) {
@@ -770,7 +771,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 只处理学生流
+   * 只处理观众流
    */
   @action.bound
   private _handleOnOrOffPodium() {
@@ -918,7 +919,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
   handleDrag(e: any, data: DraggableData, streamUuid: string, offsetX: number) {
     this.updateDraggingStreamUuid(streamUuid); // 目前正在拖拉的 streamUuid
     const stream = this.classroomStore.streamStore.streamByStreamUuid.get(streamUuid);
-    // 如果为大班课并且不为老师的话，不做碰撞处理只更新位置
+    // 如果为大班课并且不为主持人的话，不做碰撞处理只更新位置
     if (EduClassroomConfig.shared.sessionInfo.roomType === EduRoomTypeEnum.RoomBigClass) {
       if (
         stream &&
@@ -1043,7 +1044,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 把不在指定区域的学生 streams 下台
+   * 把不在指定区域的观众 streams 下台
    */
   @action.bound
   private _handleOffPodium() {
@@ -1187,14 +1188,27 @@ export class StreamWindowUIStore extends EduUIStoreBase {
         },
       ),
     );
-
+    this._disposers.push(
+      reaction(
+        () => this._teacherStream,
+        () => {
+          // 主持人流存在
+          if (this._teacherStream) {
+            EduEventUICenter.shared.emitClassroomUIEvents(
+              AgoraEduClassroomUIEvent.toggleWhiteboard,
+              true,
+            );
+          }
+        },
+      ),
+    );
     this._disposers.push(
       // 只控制上下台逻辑的变更
       // 需修改为监听下上台逻辑
       reaction(
         () => this._studentStreams,
         () => {
-          // 1v1 只处理学生离开了课堂需要把大窗口移除掉
+          // 1v1 只处理观众离开了课堂需要把大窗口移除掉
           if (
             EduClassroomConfig.shared.sessionInfo.roomType === EduRoomTypeEnum.Room1v1Class &&
             this._streamWindowUpdatedFromRoom &&
@@ -1223,12 +1237,20 @@ export class StreamWindowUIStore extends EduUIStoreBase {
     );
 
     this._disposers.push(
-      // 处理老师离开教室的逻辑
+      // 处理主持人离开教室的逻辑
       computed(() => this._teacherStream).observe(({ newValue, oldValue }) => {
         if (!newValue && oldValue) {
           this._removeStreamWindowByUuid(oldValue.streamUuid);
           this._deleteStreamWindowWidegtToServer(oldValue.streamUuid);
           this.tempStreamWindowPosMap.delete(oldValue.streamUuid);
+        }
+
+        if (!oldValue) {
+          this.boardApi.disable();
+          EduEventUICenter.shared.emitClassroomUIEvents(
+            AgoraEduClassroomUIEvent.toggleWhiteboard,
+            true,
+          );
         }
       }),
     );
@@ -1368,7 +1390,7 @@ class SceneEventHandler {
           data: { actionType, widgetUuid },
         } = cause;
 
-        // 当操作者角色为老师的话, 不为当前用户的话
+        // 当操作者角色为主持人的话, 不为当前用户的话
         if (
           (RteRole2EduRole(EduRoomTypeEnum.RoomBigClass, operator.role) ===
             EduRoleTypeEnum.teacher ||

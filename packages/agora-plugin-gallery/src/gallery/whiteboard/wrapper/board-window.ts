@@ -487,11 +487,14 @@ export class FcrBoardMainWindow implements FcrBoardMainWindowEventEmitter {
   private async _setBoardWritable(granted: boolean) {
     const room = this._whiteRoom;
     if (granted) {
+	await room.setWritable(true);
       room.disableDeviceInputs = false;
+	room.disableSerialization = false;
       await room.setWritable(true);
     } else {
+	await room.setWritable(false);
       room.disableDeviceInputs = true;
-      await room.setWritable(false);
+      room.disableSerialization = true;
     }
   }
 

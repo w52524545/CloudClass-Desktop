@@ -4,9 +4,9 @@
 
 | 支持场景 | 代码入口 | 功能描述 |
 | --- | --- | --- |
-| 1 对 1 互动教学 | [one-to-one.tsx](https://github.com/AgoraIO-Usecase/eEducation/blob/master/education_web/src/pages/classroom/one-to-one.tsx) | 1 个老师和 1 个学生默认以主播角色进入教室 |
-| 1 对 N 在线小班课 | [small-class.tsx](https://github.com/AgoraIO-Usecase/eEducation/blob/master/education_web/src/pages/classroom/small-class.tsx) | 1 个老师和最多 16 个学生默认以主播角色进入教室 |
-| 互动直播大班课 | [big-class.tsx](https://github.com/AgoraIO-Usecase/eEducation/blob/master/education_web/src/pages/classroom/big-class.tsx) | 1 个老师默认以主播角色进入教室，学生默认以观众角色进入教室，学生人数无限制 |
+| 1 对 1 互动教学 | [one-to-one.tsx](https://github.com/AgoraIO-Usecase/eEducation/blob/master/education_web/src/pages/classroom/one-to-one.tsx) | 1 个主持人和 1 个观众默认以主播角色进入教室 |
+| 1 对 N 在线小班课 | [small-class.tsx](https://github.com/AgoraIO-Usecase/eEducation/blob/master/education_web/src/pages/classroom/small-class.tsx) | 1 个主持人和最多 16 个观众默认以主播角色进入教室 |
+| 互动直播大班课 | [big-class.tsx](https://github.com/AgoraIO-Usecase/eEducation/blob/master/education_web/src/pages/classroom/big-class.tsx) | 1 个主持人默认以主播角色进入教室，观众默认以观众角色进入教室，观众人数无限制 |
 
 ### 在线体验
 

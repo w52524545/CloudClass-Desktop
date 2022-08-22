@@ -10,7 +10,7 @@ export class VocationalToolbarUIStore extends ToolbarUIStore {
     CabinetItemEnum.Laser,
   ];
   /**
-   * 老师工具栏工具列表
+   * 主持人工具栏工具列表
    * @returns
    */
   @computed

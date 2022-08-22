@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { Layout } from '~components/layout';
+import { Aside, Layout } from '~components/layout';
 import { DialogContainer } from '~containers/dialog';
 import { HandsUpContainer } from '~containers/hand-up';
 import { LoadingContainer } from '~containers/loading';
@@ -22,28 +22,34 @@ import { StreamWindowsContainer } from '../../containers/stream-windows-containe
 
 export const MidClassScenario = () => {
   // layout
-  const layoutCls = classnames('edu-room', 'mid-class-room');
+  const layoutCls = classnames('edu-room', 'big-class-room');
   const { shareUIStore } = useStore();
 
   return (
     <Room>
-      <FixedAspectRatioRootBox trackMargin={{ top: shareUIStore.navHeight }}>
+      <FixedAspectRatioRootBox trackMargin={{ top: 27 }}>
         <SceneSwitch>
           <Layout className={layoutCls} direction="col">
             <NavigationBar />
-            <Layout className="flex-grow items-stretch relative justify-center fcr-room-bg" direction="col">
-              <RoomMidStreamsContainer />
-              <Whiteboard />
-              <ScreenShareContainer />
+            <Layout className="flex-grow items-stretch fcr-room-bg h-full">
+              <Layout
+                className="flex-grow items-stretch relative"
+                direction="col"
+                style={{ paddingTop: 2 }}>
+                <Whiteboard />
+                <ScreenShareContainer />
+                <WhiteboardToolbar />
+                <ScenesController />
+                <Float bottom={15} right={10} align="end" gap={2}>
+                  <HandsUpContainer />
+                </Float>
+                <StreamWindowsContainer />
+              </Layout>
+              <Aside>
+                <RoomMidStreamsContainer />
+              </Aside>
               <RemoteControlContainer />
-              <StreamWindowsContainer />
             </Layout>
-            <WhiteboardToolbar />
-            <ScenesController />
-            <Float bottom={15} right={10} align="end" gap={2}>
-              <HandsUpContainer />
-              <Chat />
-            </Float>
             <DialogContainer />
             <LoadingContainer />
           </Layout>

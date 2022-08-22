@@ -112,7 +112,7 @@ export class DeviceSettingUIStore extends EduUIStoreBase {
         ({ newValue, oldValue }) => {
           const { cameraDeviceId } = this.classroomStore.mediaStore;
           // 避免初始化阶段触发新设备的弹窗通知
-          if (oldValue && oldValue.length > 1) {
+          if (oldValue && oldValue.length > 0) {
             const inOldList = oldValue.find((v) => v.deviceid === cameraDeviceId);
             const inNewList = newValue.find((v) => v.deviceid === cameraDeviceId);
             if ((inOldList && !inNewList) || cameraDeviceId === DEVICE_DISABLE) {
@@ -141,7 +141,7 @@ export class DeviceSettingUIStore extends EduUIStoreBase {
         ({ newValue, oldValue }) => {
           const { recordingDeviceId } = this.classroomStore.mediaStore;
           // 避免初始化阶段触发新设备的弹窗通知
-          if (oldValue && oldValue.length > 1) {
+          if (oldValue && oldValue.length > 0) {
             const inOldList = oldValue.find((v) => v.deviceid === recordingDeviceId);
             const inNewList = newValue.find((v) => v.deviceid === recordingDeviceId);
             if ((inOldList && !inNewList) || recordingDeviceId === DEVICE_DISABLE) {

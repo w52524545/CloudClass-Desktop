@@ -12,7 +12,7 @@ export class LectrueToolbarUIStore extends ToolbarUIStore {
   ];
 
   /**
-   * 老师工具栏工具列表
+   * 主持人工具栏工具列表
    * @returns
    */
   @computed

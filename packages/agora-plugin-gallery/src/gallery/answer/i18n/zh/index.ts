@@ -9,13 +9,13 @@ const selector_zh = {
     'right-key': '正确答案',
     'my-answer': '我的答案',
     over: '结束答题',
-    'student-name': '学生姓名',
+    'student-name': '观众姓名',
     'answer-time': '答题用时',
     'selected-answer': '所选答案',
     restart: '重新开始',
     award: '奖励',
-    award_winner: '奖励答对学生',
-    award_all: '奖励参与学生',
+    award_winner: '奖励答对观众',
+    award_all: '奖励参与观众',
   },
 };
 

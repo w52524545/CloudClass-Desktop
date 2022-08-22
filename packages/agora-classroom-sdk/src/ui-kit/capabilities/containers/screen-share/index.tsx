@@ -1,3 +1,4 @@
+import { handleShareStreamWindowClick } from '@/global';
 import { useStore } from '@/infra/hooks/ui-store';
 import { EduStream } from 'agora-edu-core';
 import { AGRenderMode } from 'agora-rte-sdk';
@@ -52,34 +53,37 @@ const ScreenShareRemoteTrackPlayer = observer(
 
 export type ScreenShareContainerProps = {
   className?: string;
-}
+};
 
-export const ScreenShareContainer = observer<FC<ScreenShareContainerProps>>(({className = ""}) => {
-  const {
-    boardUIStore: {
-      boardAreaHeight
-    },
-    streamUIStore: { screenShareStream },
-    classroomStore: {
-      remoteControlStore: { isControlled, isHost },
-    },
-  } = useStore();
+export const ScreenShareContainer = observer<FC<ScreenShareContainerProps>>(
+  ({ className = '' }) => {
+    const {
+      boardUIStore: { boardAreaHeight },
+      streamUIStore: { screenShareStream },
+      classroomStore: {
+        remoteControlStore: { isControlled, isHost },
+      },
+    } = useStore();
 
-  const remotecls = classnames('remote-screen-share-container', 'absolute', 'bottom-0',className);
+    const remotecls = classnames('remote-screen-share-container', 'absolute', className);
 
-  const localcls = classnames('local-screen-share-container',className);
+    const localcls = classnames('local-screen-share-container', className);
 
-  return screenShareStream || isControlled ? (
-    <React.Fragment>
-      {screenShareStream?.isLocal || isControlled ? (
-        <div className={localcls} style={{ top: `calc(100% - ${boardAreaHeight}px)` }}>
-          <ScreenShareLocalTrackPlayer />
-        </div>
-      ) : screenShareStream && !screenShareStream.isLocal && !isHost ? (
-        <div className={remotecls} style={{ height: boardAreaHeight }}>
-          <ScreenShareRemoteTrackPlayer stream={screenShareStream} />
-        </div>
-      ) : null}
-    </React.Fragment>
-  ) : null;
-});
+    return screenShareStream || isControlled ? (
+      <React.Fragment>
+        {screenShareStream?.isLocal || isControlled ? (
+          <div className={localcls} style={{ top: `calc(100% - ${boardAreaHeight}px)` }}>
+            <ScreenShareLocalTrackPlayer />
+          </div>
+        ) : screenShareStream && !screenShareStream.isLocal && !isHost ? (
+          <div
+            className={remotecls}
+            onDoubleClick={() => handleShareStreamWindowClick()}
+            style={{ height: boardAreaHeight }}>
+            <ScreenShareRemoteTrackPlayer stream={screenShareStream} />
+          </div>
+        ) : null}
+      </React.Fragment>
+    ) : null;
+  },
+);

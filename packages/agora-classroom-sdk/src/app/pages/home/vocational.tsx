@@ -57,7 +57,7 @@ export const webRTCCodecH264 = [
 ];
 
 // 1. 伪直播场景不需要pretest
-// 2. 合流转推场景下的学生角色不需要pretest
+// 2. 合流转推场景下的观众角色不需要pretest
 export const vocationalNeedPreset = (
   roleType: EduRoleTypeEnum,
   roomServiceType: EduRoomServiceTypeEnum,

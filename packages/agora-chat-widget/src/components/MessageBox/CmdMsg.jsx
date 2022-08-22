@@ -60,7 +60,7 @@ export const CmdMsg = ({ item }) => {
       );
     }
 
-    //老师视角
+    //主持人视角
     // 禁言
     if (isTeahcer && isMuteUser) {
       if (currentUserId === item.from) {
@@ -161,7 +161,7 @@ export const CmdMsg = ({ item }) => {
       }
     }
 
-    //学生视角
+    //观众视角
     if (isMuter && isMuteUser) {
       return (
         <div className="fcr-hx-mute-msg">

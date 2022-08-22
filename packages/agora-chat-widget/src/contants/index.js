@@ -2,11 +2,11 @@
 export const ROLE = {
   teacher: {
     id: 1,
-    tag: '老师',
+    tag: '主持人',
   },
   student: {
     id: 2,
-    tag: '学生',
+    tag: '观众',
   },
   assistant: {
     id: 3,

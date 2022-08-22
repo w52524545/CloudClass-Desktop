@@ -1,6 +1,13 @@
 import {
-    AGServiceErrorCode,
-    EduClassroomConfig, EduRoleTypeEnum, EduRoomServiceTypeEnum, EduRoomSubtypeEnum, EduRoomTypeEnum, HandUpProgress, PodiumSrouce, RteRole2EduRole
+  AGServiceErrorCode,
+  EduClassroomConfig,
+  EduRoleTypeEnum,
+  EduRoomServiceTypeEnum,
+  EduRoomSubtypeEnum,
+  EduRoomTypeEnum,
+  HandUpProgress,
+  PodiumSrouce,
+  RteRole2EduRole,
 } from 'agora-edu-core';
 import { AGError, bound, Lodash } from 'agora-rte-sdk';
 import { action, computed, observable, runInAction } from 'mobx';
@@ -215,7 +222,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师的唯一标识
+   * 主持人的唯一标识
    * @returns
    */
   @computed
@@ -229,7 +236,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生上台(接受学生举手)
+   * 观众上台(接受观众举手)
    * @param userUuid
    */
   @bound
@@ -252,7 +259,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 邀请学生上台
+   * 邀请观众上台
    * @param userUuid
    */
   invite(userUuid: string, duration: number, payload?: any) {
@@ -263,7 +270,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生同意上台
+   * 观众同意上台
    * @param userUuid
    */
   confirmInvited() {
@@ -274,7 +281,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生拒绝上台邀请
+   * 观众拒绝上台邀请
    * @param userUuid
    */
   @bound
@@ -283,7 +290,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生下台
+   * 观众下台
    * @param userUuid
    */
   @bound
@@ -294,7 +301,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 老师拒绝学生上台
+   * 主持人拒绝观众上台
    * @param userUuid
    */
   @bound
@@ -305,7 +312,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生取消举手
+   * 观众取消举手
    */
   @bound
   async cancelHandUp() {
@@ -315,7 +322,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生挥手
+   * 观众挥手
    *
    * @param teacherUuid
    * @param duration 挥手的时间，单位：秒，-1 为持续举手
@@ -373,7 +380,7 @@ export class HandUpUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 重置学生列表及查询条件
+   * 重置观众列表及查询条件
    */
   @action.bound
   resetStudentList() {

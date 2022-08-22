@@ -346,7 +346,7 @@ export class RosterUIStore extends EduUIStoreBase {
   };
 
   /**
-   * 获取指定学生 stream
+   * 获取指定观众 stream
    * @param uid
    * @returns
    */
@@ -378,7 +378,7 @@ export class RosterUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 开启扩展屏状态，并且发布需要订阅的学生流信息
+   * 开启扩展屏状态，并且发布需要订阅的观众流信息
    * @param state
    * @param data
    */
@@ -400,7 +400,7 @@ export class RosterUIStore extends EduUIStoreBase {
   /** Computed */
 
   /**
-   * 老师名称
+   * 主持人名称
    * @returns
    */
   @computed
@@ -415,7 +415,7 @@ export class RosterUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 学生列表
+   * 观众列表
    * @returns
    */
   @computed
@@ -624,7 +624,7 @@ export class RosterUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 是否可以开启和关闭学生音视频
+   * 是否可以开启和关闭观众音视频
    * @returns
    */
   get canOperateMedia() {

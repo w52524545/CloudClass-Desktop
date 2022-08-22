@@ -2,27 +2,27 @@ import { vocationalNeedPreset } from '@/app/pages/home/vocational';
 import { ControlBar } from '@/ui-kit/capabilities/containers/fragments';
 import { Scenarios } from '@/ui-kit/capabilities/scenarios';
 import {
-    AgoraEduClassroomEvent,
-    CloudDriveResource,
-    EduClassroomConfig,
-    EduEventCenter,
-    EduMediaEncryptionMode,
-    EduRegion,
-    EduRoleTypeEnum,
-    EduRoomServiceTypeEnum,
-    EduRoomSubtypeEnum,
-    EduRoomTypeEnum,
-    Platform
+  AgoraEduClassroomEvent,
+  CloudDriveResource,
+  EduClassroomConfig,
+  EduEventCenter,
+  EduMediaEncryptionMode,
+  EduRegion,
+  EduRoleTypeEnum,
+  EduRoomServiceTypeEnum,
+  EduRoomSubtypeEnum,
+  EduRoomTypeEnum,
+  Platform,
 } from 'agora-edu-core';
 import {
-    AgoraChatWidget,
-    AgoraCountdown,
-    AgoraHXChatWidget,
-    AgoraPolling,
-    AgoraSelector,
-    FcrBoardWidget,
-    FcrStreamMediaPlayerWidget,
-    FcrWebviewWidget
+  AgoraChatWidget,
+  AgoraCountdown,
+  AgoraHXChatWidget,
+  AgoraPolling,
+  AgoraSelector,
+  FcrBoardWidget,
+  FcrStreamMediaPlayerWidget,
+  FcrWebviewWidget,
 } from 'agora-plugin-gallery';
 import { ApiBase } from 'agora-rte-sdk';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -32,28 +32,28 @@ import { EduContext } from '../contexts';
 import { createCloudResource } from '../stores/common/cloud-drive/helper';
 import { FcrMultiThemeMode, FcrUIConfig } from '../types/config';
 import {
-    applyTheme,
-    loadGeneratedFiles,
-    loadTheme,
-    loadUIConfig,
-    supportedRoomTypes,
-    themes,
-    uiConfigs
+  applyTheme,
+  loadGeneratedFiles,
+  loadTheme,
+  loadUIConfig,
+  supportedRoomTypes,
+  themes,
+  uiConfigs,
 } from '../utils/config-loader';
 
 import './polyfills';
 import { Providers } from './providers';
 import {
-    AgoraWidgetBase,
-    BoardWindowAnimationOptions,
-    ConfigParams,
-    ConvertMediaOptionsConfig,
-    CourseWareItem,
-    CourseWareList,
-    LaunchMediaOptions,
-    LaunchOption,
-    LaunchWindowOption,
-    WindowID
+  AgoraWidgetBase,
+  BoardWindowAnimationOptions,
+  ConfigParams,
+  ConvertMediaOptionsConfig,
+  CourseWareItem,
+  CourseWareList,
+  LaunchMediaOptions,
+  LaunchOption,
+  LaunchWindowOption,
+  WindowID,
 } from './type';
 
 export * from './type';
@@ -152,8 +152,8 @@ export class AgoraEduSDK {
 
       return {
         name,
-        roomType
-      }
+        roomType,
+      };
     });
   }
 
@@ -286,7 +286,7 @@ export class AgoraEduSDK {
       [this._getWidgetName(FcrStreamMediaPlayerWidget)]: FcrStreamMediaPlayerWidget,
     };
 
-    //TODO:待优化。 问题：合流转推(学生) 和 伪直播 场景不需要白板插件，因为它们使用的都是大班课的班型，所以不能通过后端禁用白板。
+    //TODO:待优化。 问题：合流转推(观众) 和 伪直播 场景不需要白板插件，因为它们使用的都是大班课的班型，所以不能通过后端禁用白板。
     if (
       option.roomServiceType === EduRoomServiceTypeEnum.HostingScene ||
       (EduRoomServiceTypeEnum.MixStreamCDN === option.roomServiceType &&
@@ -403,8 +403,9 @@ export class AgoraEduSDK {
       sessionInfo: { roomUuid },
       appId,
     } = EduClassroomConfig.shared;
-    const pathPrefix = `${ignoreUrlRegionPrefix ? '' : '/' + region.toLowerCase()
-      }/edu/apps/${appId}`;
+    const pathPrefix = `${
+      ignoreUrlRegionPrefix ? '' : '/' + region.toLowerCase()
+    }/edu/apps/${appId}`;
     new ApiBase().fetch({
       path: `/v2/rooms/${roomUuid}/records/ready`,
       method: 'PUT',

@@ -25,7 +25,7 @@ export const Docs = ({ title }: DocsProps) => (
   <>
     <div className="mt-4">
       <Modal title={title} footer={[<Button type="secondary">test</Button>, <Button>test</Button>]}>
-        <p>你确定要下课吗？</p>
+        <p>你确定要结束会议吗？</p>
       </Modal>
     </div>
     <div className="mt-4">
@@ -54,7 +54,7 @@ export const KickStudents = () => {
   return (
     <Modal
       style={{ width: 300 }}
-      title={'移出学生'}
+      title={'移出观众'}
       onOk={() => {
         console.log(value);
       }}
