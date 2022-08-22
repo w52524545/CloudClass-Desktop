@@ -946,16 +946,16 @@ export class ToolbarUIStore extends EduUIStoreBase {
         category: ToolbarItemCategory.Eraser,
       }),
       ToolbarItem.fromData({
-        value: 'register',
-        label: 'scaffold.register',
-        icon: 'register',
-        category: ToolbarItemCategory.Roster,
-      }),
-      ToolbarItem.fromData({
         value: 'screenShare',
         label: 'scaffold.screen_share',
         icon: 'share-screen',
         category: ToolbarItemCategory.ScreenShare,
+      }),
+      ToolbarItem.fromData({
+        value: 'register',
+        label: 'scaffold.register',
+        icon: 'register',
+        category: ToolbarItemCategory.Roster,
       }),
     ];
   }
