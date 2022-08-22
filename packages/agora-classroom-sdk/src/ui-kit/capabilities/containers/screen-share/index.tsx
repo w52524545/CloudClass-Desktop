@@ -72,7 +72,7 @@ export const ScreenShareContainer = observer<FC<ScreenShareContainerProps>>(
     return screenShareStream || isControlled ? (
       <React.Fragment>
         {screenShareStream?.isLocal || isControlled ? (
-          <div className={localcls} style={{ top: `calc(100% - ${boardAreaHeight}px)` }}>
+          <div className={localcls}>
             <ScreenShareLocalTrackPlayer />
           </div>
         ) : screenShareStream && !screenShareStream.isLocal && !isHost ? (

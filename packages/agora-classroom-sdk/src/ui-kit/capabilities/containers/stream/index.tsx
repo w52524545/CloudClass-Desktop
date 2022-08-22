@@ -1,7 +1,8 @@
-import { useStore } from '@/infra/hooks/ui-store';
+import { useInteractiveUIStores, useStore } from '@/infra/hooks/ui-store';
 import { EduStreamUI } from '@/infra/stores/common/stream/struct';
 import { CameraPlaceholderType } from '@/infra/stores/common/type';
-import { EduRoleTypeEnum } from 'agora-edu-core';
+import { EduInteractiveUIClassStore } from '@/infra/stores/interactive';
+import { EduClassroomConfig, EduRoleTypeEnum } from 'agora-edu-core';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
 import { observer } from 'mobx-react';
@@ -214,6 +215,12 @@ export const StreamPlayer: FC<{
   const handleMouseLeave = () => {
     setToolbarVisible(false);
   };
+
+  const { streamUIStore } = useInteractiveUIStores() as EduInteractiveUIClassStore;
+  const { teacherCameraStream } = streamUIStore;
+  const { classroomStore } = useStore();
+  const { startCarousel } = classroomStore.roomStore;
+  useEffect(() => {});
 
   return (
     <div

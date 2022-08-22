@@ -12,7 +12,9 @@ export const RoomMidStreamsContainer = observer(() => {
   const { streamUIStore } = useInteractiveUIStores() as EduInteractiveUIClassStore;
 
   const { stageVisible } = streamUIStore;
-
+  const { teacherCameraStream } = streamUIStore;
+  const { streamWindowUIStore } = useStore();
+  const { visibleStream } = streamWindowUIStore;
   return (
     <div
       id="stage-container"
@@ -20,7 +22,13 @@ export const RoomMidStreamsContainer = observer(() => {
       <div
         style={{ overflowX: 'hidden', overflowY: 'auto' }}
         className="h-full justify-center items-center relative">
-        <TeacherStream />
+        {!(
+          teacherCameraStream?.stream.streamUuid &&
+          visibleStream(teacherCameraStream?.stream.streamUuid)
+        ) ? (
+          <TeacherStream />
+        ) : null}
+
         <StudentStreams />
       </div>
     </div>
@@ -40,28 +48,7 @@ export const TeacherStream = visibilityControl(
       width: videoStreamSize.width,
       height: videoStreamSize.height,
     };
-    const { classroomStore } = useStore();
-    const { startCarousel } = classroomStore.roomStore;
-    useEffect(() => {
-      if (
-        !EduClassroomConfig.shared.sessionInfo.IsCol &&
-        EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher &&
-        teacherCameraStream
-      ) {
-        startCarousel({
-          range: 1,
-          type: 1,
-          interval: 10,
-        })
-          .then(() => {
-            EduClassroomConfig.shared.sessionInfo.IsCol = true;
-          })
-          .catch((e) => {
-            console.error(e);
-            EduClassroomConfig.shared.sessionInfo.IsCol = false;
-          });
-      }
-    });
+
     return <DragableStream style={style} playerStyle={playerStyle} stream={teacherCameraStream} />;
   }),
   teacherVideoEnabled,
