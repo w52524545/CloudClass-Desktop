@@ -10,14 +10,13 @@ import { RoomMidStreamsContainer } from '~containers/stream/room-mid-player';
 import { ToastContainer } from '~containers/toast';
 import { Award } from '../../containers/award';
 import Room from '../room';
-import { useStore } from '@/infra/hooks/ui-store';
-import { Float, Roster, RosterTable } from '~ui-kit';
+import { Float } from '~ui-kit';
 import { RemoteControlContainer } from '../../containers/remote-control';
 import { ScenesController } from '../../containers/scenes-controller';
 import { ScreenShareContainer } from '../../containers/screen-share';
 import { WhiteboardToolbar } from '../../containers/toolbar';
 import { WidgetContainer } from '../../containers/widget';
-import { Chat, Whiteboard } from '../../containers/widget/slots';
+import { Whiteboard } from '../../containers/widget/slots';
 import { StreamWindowsContainer } from '../../containers/stream-windows-container';
 
 export const MidClassScenario = () => {
