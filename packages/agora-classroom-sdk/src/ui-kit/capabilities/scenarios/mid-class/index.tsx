@@ -11,7 +11,7 @@ import { ToastContainer } from '~containers/toast';
 import { Award } from '../../containers/award';
 import Room from '../room';
 import { useStore } from '@/infra/hooks/ui-store';
-import { Float } from '~ui-kit';
+import { Float, Roster, RosterTable } from '~ui-kit';
 import { RemoteControlContainer } from '../../containers/remote-control';
 import { ScenesController } from '../../containers/scenes-controller';
 import { ScreenShareContainer } from '../../containers/screen-share';
@@ -23,7 +23,6 @@ import { StreamWindowsContainer } from '../../containers/stream-windows-containe
 export const MidClassScenario = () => {
   // layout
   const layoutCls = classnames('edu-room', 'big-class-room');
-
   return (
     <Room>
       <FixedAspectRatioRootBox trackMargin={{ top: 27 }}>

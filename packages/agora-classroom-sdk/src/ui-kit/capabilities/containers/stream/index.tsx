@@ -286,7 +286,8 @@ export const CarouselGroup = observer(
     gap: number;
   }) => {
     const fullheight = innerHeight - videoHeight - gap - gap - 24;
-    const height = useDebounce(carouselStreams.length ? fullheight : 0, ANIMATION_DELAY);
+    const height = useDebounce(carouselStreams.length ? fullheight / 2 : 0, ANIMATION_DELAY);
+
     return (
       <TransitionGroup className="overflow-auto" style={{ width: '100%', height }}>
         {carouselStreams.map((stream: EduStreamUI, idx: number) => {

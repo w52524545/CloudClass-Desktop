@@ -532,7 +532,7 @@ export class RosterUIStore extends EduUIStoreBase {
   get rosterFunctions() {
     const { canKickOut, canOperateCarousel, canSearchInRoster } = this;
 
-    const functions = ['podium', 'grant-board'] as Array<
+    const functions = ['grant-board'] as Array<
       'search' | 'carousel' | 'kick' | 'grant-board' | 'podium' | 'stars' | 'supervise-student'
     >;
     this.classroomStore.connectionStore.mainRoomScene?.sceneId;
