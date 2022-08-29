@@ -236,7 +236,7 @@ export abstract class AgoraWidgetBase implements AgoraWidgetRenderable, AgoraMul
   }
 
   /**
-   * 教室 Store
+   * 会议 Store
    */
   get classroomStore() {
     return this._classroomStore;
@@ -250,7 +250,7 @@ export abstract class AgoraWidgetBase implements AgoraWidgetRenderable, AgoraMul
   }
 
   /**
-   * 教室配置
+   * 会议配置
    */
   get classroomConfig() {
     return this._widgetController.classroomConfig;

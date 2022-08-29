@@ -30,7 +30,7 @@ import { EduStreamUI } from '../stream/struct';
 
 export class RosterUIStore extends EduUIStoreBase {
   /**
-   * width: 花名册窗口宽度
+   * width: 参会人员名单窗口宽度
    */
   get uiOverrides() {
     return { ...super.uiOverrides, width: 710 };
@@ -182,7 +182,7 @@ export class RosterUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 花名册功能按钮点击
+   * 参会人员名单功能按钮点击
    * @param operation
    * @param profile
    */
@@ -256,13 +256,21 @@ export class RosterUIStore extends EduUIStoreBase {
   };
 
   clickGrantBoard = (profile: Profile) => {
-    const { grantedUsers, grantPrivilege } = this.boardApi;
-    const userUuid = profile.uid as string;
-
-    if (grantedUsers.has(userUuid)) {
-      grantPrivilege(userUuid, false);
+    const { grantedUsers, grantPrivilege, mounted } = this.boardApi;
+    if (!mounted) {
+      this.shareUIStore.addDialog(DialogCategory.OpenWhiteBoardFirst, {
+        onOk: () => {
+          return false;
+        },
+      });
     } else {
-      grantPrivilege(userUuid, true);
+      const userUuid = profile.uid as string;
+
+      if (grantedUsers.has(userUuid)) {
+        grantPrivilege(userUuid, false);
+      } else {
+        grantPrivilege(userUuid, true);
+      }
     }
   };
 
@@ -525,7 +533,7 @@ export class RosterUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 花名册功能列表
+   * 参会人员名单功能列表
    * @returns
    */
   @computed
@@ -543,13 +551,13 @@ export class RosterUIStore extends EduUIStoreBase {
       functions.push('kick');
     }
     if (canOperateCarousel && isInMainRoom && !this.groupStarted && this.stageVisible) {
-      functions.push('carousel');
+      //functions.push('carousel');
     }
     if (canSearchInRoster) {
       functions.push('search');
     }
     if (isInMainRoom) {
-      functions.push('stars');
+      //functions.push('stars');
     }
     return functions;
   }
@@ -599,10 +607,8 @@ export class RosterUIStore extends EduUIStoreBase {
    */
   get canGrantWhiteboardPermissions() {
     const { sessionInfo } = EduClassroomConfig.shared;
-    return (
-      [EduRoleTypeEnum.assistant, EduRoleTypeEnum.teacher].includes(sessionInfo.role) &&
-      this.boardApi.mounted
-    );
+    return [EduRoleTypeEnum.assistant, EduRoleTypeEnum.teacher].includes(sessionInfo.role); //&&
+    //this.boardApi.mounted
   }
 
   /**

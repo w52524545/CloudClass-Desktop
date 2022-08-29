@@ -18,10 +18,17 @@ import { WhiteboardToolbar } from '../../containers/toolbar';
 import { WidgetContainer } from '../../containers/widget';
 import { Whiteboard } from '../../containers/widget/slots';
 import { StreamWindowsContainer } from '../../containers/stream-windows-container';
+import { EduClassroomConfig, EduRoleTypeEnum, LeaveReason } from 'agora-edu-core';
+import { useStore } from '@/infra/hooks/ui-store';
+import { DialogCategory } from '@/infra/stores/common/share-ui';
 
 export const MidClassScenario = () => {
   // layout
   const layoutCls = classnames('edu-room', 'big-class-room');
+  const { classroomStore } = useStore();
+  window.onbeforeunload = function () {
+    classroomStore.connectionStore.leaveClassroom(LeaveReason.leave);
+  };
   return (
     <Room>
       <FixedAspectRatioRootBox trackMargin={{ top: 27 }}>

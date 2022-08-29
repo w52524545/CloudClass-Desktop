@@ -6,7 +6,8 @@ import { CarouselGroup, NavGroup } from '.';
 import { visibilityControl } from '../visibility';
 import { studentVideoEnabled, teacherVideoEnabled } from '../visibility/controlled';
 import { DragableStream } from './draggable-stream';
-import { EduClassroomConfig, EduRoleTypeEnum } from 'agora-edu-core';
+import { EduClassroomConfig, EduRoleTypeEnum, LeaveReason } from 'agora-edu-core';
+import { DialogCategory } from '@/infra/stores/common/share-ui';
 
 export const RoomMidStreamsContainer = observer(() => {
   const { streamUIStore } = useInteractiveUIStores() as EduInteractiveUIClassStore;
@@ -71,7 +72,10 @@ export const StudentStreams = visibilityControl(
     );
 
     return (
-      <div onMouseEnter={mouseHandler(true)} onMouseLeave={mouseHandler(false)}>
+      <div
+        style={{ marginRight: '2px', marginTop: '1.5px' }}
+        onMouseEnter={mouseHandler(true)}
+        onMouseLeave={mouseHandler(false)}>
         {scrollable && (
           <NavGroup visible={navigationVisible} onPrev={carouselPrev} onNext={carouselNext} />
         )}

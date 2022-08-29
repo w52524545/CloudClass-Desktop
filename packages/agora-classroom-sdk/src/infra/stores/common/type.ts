@@ -24,7 +24,7 @@ export enum CameraPlaceholderType {
    */
   disabled = 'disabled',
   /**
-   * 主持人不在教室
+   * 主持人不在会议
    */
   notpresent = 'notpresent',
   /**

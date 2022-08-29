@@ -190,7 +190,7 @@ export class GroupUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 当前房间
+   * 当前会议
    */
   get currentSubRoom() {
     return this.classroomStore.groupStore.currentSubRoom;
@@ -544,7 +544,7 @@ export class GroupUIStore extends EduUIStoreBase {
     }, 0);
   }
   /**
-   * 加入子房间
+   * 加入子会议
    * @param groupUuid
    */
   @bound

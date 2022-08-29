@@ -210,7 +210,7 @@ export class StreamUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 主持人流信息（教室内只有一个主持人时使用，如果有一个以上主持人请使用 teacherStreams）
+   * 主持人流信息（会议内只有一个主持人时使用，如果有一个以上主持人请使用 teacherStreams）
    * @returns
    */
   @computed get teacherCameraStream(): EduStreamUI | undefined {
@@ -220,7 +220,7 @@ export class StreamUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 观众流信息（教室内只有一个观众时使用，如果有一个以上主持人请使用 studentStreams）
+   * 观众流信息（会议内只有一个观众时使用，如果有一个以上主持人请使用 studentStreams）
    * @returns
    */
   @computed get studentCameraStream(): EduStreamUI | undefined {

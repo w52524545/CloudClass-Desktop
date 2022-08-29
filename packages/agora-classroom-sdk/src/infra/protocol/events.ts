@@ -1,6 +1,6 @@
 /**
- * 教室事件
- * 此类事件从教室发出，在Widget中监听
+ * 会议事件
+ * 此类事件从会议发出，在Widget中监听
  */
 export enum AgoraExtensionRoomEvent {
   /** 白板 */
@@ -36,7 +36,7 @@ export enum AgoraExtensionRoomEvent {
 
 /**
  * Widget事件
- * 此事件从Widget发出，在教室内监听
+ * 此事件从Widget发出，在会议内监听
  */
 export enum AgoraExtensionWidgetEvent {
   /** 白板 */
@@ -44,7 +44,7 @@ export enum AgoraExtensionWidgetEvent {
   BoardConnStateChanged = 'board-connection-state-changed',
   // 挂载状态变更
   BoardMountStateChanged = 'board-mount-state-changed',
-  // 房间属性变更
+  // 会议属性变更
   BoardMemberStateChanged = 'board-member-state-changed',
   // 页码属性变更
   BoardPageInfoChanged = 'board-page-info-changed',

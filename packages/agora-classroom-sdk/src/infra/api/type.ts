@@ -66,18 +66,18 @@ export type ConvertMediaOptionsConfig = EduRtcConfig & {
 export type LaunchOption = {
   userUuid: string; // 用户uuid
   userName: string; // 用户昵称
-  roomUuid: string; // 房间uuid
+  roomUuid: string; // 会议uuid
   roleType: EduRoleTypeEnum; // 角色
-  roomType: EduRoomTypeEnum; // 房间类型
-  roomSubtype?: EduRoomSubtypeEnum; // 房间子类型
-  roomServiceType?: EduRoomServiceTypeEnum; // 房间服务类型
-  roomName: string; // 房间名称
+  roomType: EduRoomTypeEnum; // 会议类型
+  roomSubtype?: EduRoomSubtypeEnum; // 会议子类型
+  roomServiceType?: EduRoomServiceTypeEnum; // 会议服务类型
+  roomName: string; // 会议名称
   listener: ListenerCallback; // launch状态
   pretest: boolean; // 开启设备检测
   rtmToken: string; // rtmToken
   language: LanguageEnum; // 国际化
-  startTime?: number; // 房间开始时间
-  duration: number; // 课程时长
+  startTime?: number; // 会议开始时间
+  duration: number; // 会议时长
   courseWareList: CourseWareList; // 课件列表
   recordUrl?: string; // 回放页地址
   widgets?: { [key: string]: typeof AgoraWidgetBase };

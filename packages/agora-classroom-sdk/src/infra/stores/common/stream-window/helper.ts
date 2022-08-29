@@ -164,7 +164,7 @@ export const calculateSizeSquare = (length: number, width: number, height: numbe
 
 /**
  * 需要把 x, y 为可移动距离的比例
- * 最大有效移动范围（Maximum Effective Distance, MED）：在不超出教室布局的前提下，分别能够在 X 轴、Y 轴方向移动的最大距离
+ * 最大有效移动范围（Maximum Effective Distance, MED）：在不超出会议布局的前提下，分别能够在 X 轴、Y 轴方向移动的最大距离
  * 移动偏移量：
  * @param rect
  */

@@ -27,7 +27,7 @@ export class LayoutUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 所在房间名称
+   * 所在会议名称
    */
   @computed
   get currentSubRoomName() {
@@ -61,7 +61,7 @@ export class LayoutUIStore extends EduUIStoreBase {
     this.awardAnims = this.awardAnims.filter((anim) => anim.id !== id);
   }
   /**
-   * 教室加载状态
+   * 会议加载状态
    */
   @computed get loading(): boolean {
     const classroomState = this.classroomStore.connectionStore.classroomState;

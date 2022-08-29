@@ -6,6 +6,8 @@ import { ChannelType, IPCMessageType } from '@/infra/utils/ipc-channels';
 
 import {
   AGEduErrorCode,
+  ClassroomState,
+  ClassState,
   CustomBtoa,
   EduClassroomConfig,
   EduErrorCenter,
@@ -279,7 +281,7 @@ export class ToolbarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 主持人流信息（教室内只有一个主持人时使用，如果有一个以上主持人请使用 teacherStreams）
+   * 主持人流信息（会议内只有一个主持人时使用，如果有一个以上主持人请使用 teacherStreams）
    * @returns
    */
   @computed get teacherCameraStream(): EduStreamUI | undefined {
@@ -470,7 +472,7 @@ export class ToolbarUIStore extends EduUIStoreBase {
           });
           break;
         case 'slice-window':
-          // 隐藏教室截图
+          // 隐藏会议截图
           sendToMainProcess(ChannelType.ShortCutCapture, { hideWindow: true, module: this.module });
           break;
         default:
@@ -481,13 +483,8 @@ export class ToolbarUIStore extends EduUIStoreBase {
     }
   }
 
-  /**
-   * 选中工具
-   * @param tool
-   * @returns
-   */
   @action.bound
-  setTool(tool: string) {
+  RunTool(tool: string) {
     const eduTool = this._convertUITools2EduTools(tool);
 
     if (eduTool.length === 1) {
@@ -600,6 +597,39 @@ export class ToolbarUIStore extends EduUIStoreBase {
           }
         }
         break;
+    }
+  }
+
+  /**
+   * 选中工具
+   * @param tool
+   * @returns
+   */
+  @action.bound
+  setTool(tool: string) {
+    const { state } = this.classroomStore.roomStore.classroomSchedule;
+    if (state === ClassState.beforeClass && tool !== 'register') {
+      this.shareUIStore.addDialog(
+        EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher
+          ? DialogCategory.AutoStartBeforeClass
+          : DialogCategory.AutoStartBeforeClass,
+        {
+          onOk: () => {
+            if (EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher) {
+              this.classroomStore.roomStore.updateClassState(ClassState.ongoing);
+              this.RunTool(tool);
+            } else {
+              return false;
+            }
+          },
+          onCancel: () => {
+            return false;
+          },
+          showOption: EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher,
+        },
+      );
+    } else {
+      this.RunTool(tool);
     }
   }
 

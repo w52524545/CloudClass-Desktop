@@ -353,7 +353,7 @@ export class NotificationUIStore extends EduUIStoreBase {
           });
           break;
         case ClassState.afterClass:
-          //距离教室关闭的时间
+          //距离会议关闭的时间
           this._checkMinutesThrough([1], this.durationToRoomClose, (minutes) => {
             this.addClassStateNotification(ClassState.afterClass, minutes);
           });
@@ -379,7 +379,7 @@ export class NotificationUIStore extends EduUIStoreBase {
    * 根据课堂状态获取时长，
    * 未开始：距开始时间
    * 进行中：距离结束时间
-   * 课程结束：距离教室关闭时间
+   * 会议结束：距离会议关闭时间
    * @returns
    */
   @computed
@@ -409,7 +409,7 @@ export class NotificationUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 距离教室关闭的时间
+   * 距离会议关闭的时间
    * @returns
    */
   @computed
@@ -426,7 +426,7 @@ export class NotificationUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 距离课程结束的时间
+   * 距离会议结束的时间
    * @returns
    */
   get durationToClassEnd() {

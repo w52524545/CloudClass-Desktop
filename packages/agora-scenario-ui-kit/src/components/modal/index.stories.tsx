@@ -30,7 +30,7 @@ export const Docs = ({ title }: DocsProps) => (
     </div>
     <div className="mt-4">
       <Modal title={title} closable={false} footer={[<Button>test</Button>]}>
-        <p>试用时间到，教室已解散！</p>
+        <p>试用时间到，会议已解散！</p>
       </Modal>
     </div>
     <div className="mt-4">

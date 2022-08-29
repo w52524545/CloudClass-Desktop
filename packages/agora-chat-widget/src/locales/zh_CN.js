@@ -49,7 +49,7 @@ const im_CN = {
     update_room_announcement: '修改聊天室公告失败',
     uploading_picture: '上传图片失败',
     screenshots: '截图',
-    hide_classroom_page_screenshots: '隐藏教室页面截图',
+    hide_classroom_page_screenshots: '隐藏会议页面截图',
     screenshots_file: '截图文件',
     send_to_all: '发送全体消息',
     sentence_connector: '，',

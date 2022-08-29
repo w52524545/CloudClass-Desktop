@@ -157,7 +157,7 @@ export class EduClassroomUIStore {
   }
 
   /**
-   * 加入教室，之后加入 RTC 频道
+   * 加入会议，之后加入 RTC 频道
    */
   async join() {
     const { joinClassroom, joinRTC } = this.classroomStore.connectionStore;

@@ -65,7 +65,7 @@ export interface ChatProps extends AffixProps {
    */
   onClickMiniChat?: () => void | Promise<void>;
   /**
-   * 未读房间消息
+   * 未读会议消息
    */
   unReadMessageCount?: number;
   /**

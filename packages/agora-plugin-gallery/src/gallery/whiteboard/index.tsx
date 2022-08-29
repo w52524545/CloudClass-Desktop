@@ -218,7 +218,7 @@ export class FcrBoardWidget extends AgoraWidgetBase implements AgoraWidgetLifecy
         [AgoraExtensionRoomEvent.BoardLoadAttributes]: this._loadAttributes,
         [AgoraExtensionRoomEvent.BoardGetSnapshotImageList]: mainWindow.getSnapshotImage,
         [AgoraExtensionRoomEvent.BoardSetDelay]: mainWindow.setTimeDelay,
-        [AgoraExtensionRoomEvent.BoardOpenH5ResourceWindow]: mainWindow.createH5Window
+        [AgoraExtensionRoomEvent.BoardOpenH5ResourceWindow]: mainWindow.createH5Window,
       });
     }
 
@@ -239,7 +239,7 @@ export class FcrBoardWidget extends AgoraWidgetBase implements AgoraWidgetLifecy
 
     if (_boardDom && _boardMainWindow) {
       this._mounted = true;
-      const aspectRatio = _boardDom.clientHeight / _boardDom.clientWidth
+      const aspectRatio = _boardDom.clientHeight / _boardDom.clientWidth;
       _boardMainWindow.mount(_boardDom, {
         containerSizeRatio: aspectRatio,
         collectorContainer: this._collectorDom ?? undefined,
@@ -286,7 +286,9 @@ export class FcrBoardWidget extends AgoraWidgetBase implements AgoraWidgetLifecy
     const mainWindow = this._boardMainWindow;
     const { sessionInfo } = this.classroomConfig;
     if (mainWindow) {
-      const attributes = await this.classroomStore.api.getWindowManagerAttributes(sessionInfo.roomUuid);
+      const attributes = await this.classroomStore.api.getWindowManagerAttributes(
+        sessionInfo.roomUuid,
+      );
 
       mainWindow.setAttributes(attributes);
     }
@@ -308,7 +310,7 @@ export class FcrBoardWidget extends AgoraWidgetBase implements AgoraWidgetLifecy
       userId,
       userName,
       hasOperationPrivilege,
-    }
+    };
 
     const boardRoom = this._boardRoom;
 
@@ -392,10 +394,9 @@ export class FcrBoardWidget extends AgoraWidgetBase implements AgoraWidgetLifecy
         this.shareUIStore.addToast(transI18n('toast2.save_error'));
       }
     });
-
   }
 
-  tryReconnect() { }
+  tryReconnect() {}
 
   @bound
   handleDragOver(e: unknown) {
@@ -428,7 +429,7 @@ export class FcrBoardWidget extends AgoraWidgetBase implements AgoraWidgetLifecy
   }
 
   /**
-   * 房间属性变更
+   * 会议属性变更
    * @param props
    */
   onPropertiesUpdate(props: any) {

@@ -25,6 +25,9 @@ export enum DialogCategory {
   StreamView,
   InvitePodium,
   InviteConfirm,
+  AutoStartBeforeClass,
+  OpenWhiteBoardFirst,
+  ConfirmEndClass,
 }
 
 export interface ToastType {
@@ -54,7 +57,7 @@ export class EduShareUIStore {
   private _resizeEventListenerAdded = false;
 
   /**
-   * 教室UI布局完毕
+   * 会议UI布局完毕
    */
   @observable
   layoutReady = false;
@@ -247,7 +250,7 @@ export class EduShareUIStore {
 
   /** Actions */
   /**
-   * 更新教室视口尺寸信息
+   * 更新会议视口尺寸信息
    */
   @Lodash.debounced(500)
   updateClassroomViewportSize() {

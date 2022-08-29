@@ -18,6 +18,9 @@ import { RemoteControlConfirm } from './remote-control-confirm';
 import { StudentStream } from '../supervise-student';
 import { InviteConfirmContainer } from '../hand-up/invite-confirm';
 import { InvitePodiumContainer } from '../hand-up/invite-container';
+import { AutoStartBeforeClass } from './AutoStartBeforeClass';
+import { OpenWhiteFirstBeforeOper } from './OpenWhiteFirstBeforeOper';
+import { ConfirmEndClass } from './ComfirmEndClass';
 
 const getDialog = (category: DialogCategory, id: string, props?: any): ReactNode => {
   switch (category) {
@@ -52,6 +55,12 @@ const getDialog = (category: DialogCategory, id: string, props?: any): ReactNode
       return <InvitePodiumContainer {...props} id={id} />;
     case DialogCategory.InviteConfirm:
       return <InviteConfirmContainer {...props} id={id} />;
+    case DialogCategory.AutoStartBeforeClass:
+      return <AutoStartBeforeClass {...props} id={id} />;
+    case DialogCategory.OpenWhiteBoardFirst:
+      return <OpenWhiteFirstBeforeOper {...props} id={id} />;
+    case DialogCategory.ConfirmEndClass:
+      return <ConfirmEndClass {...props} id={id} />;
   }
 };
 

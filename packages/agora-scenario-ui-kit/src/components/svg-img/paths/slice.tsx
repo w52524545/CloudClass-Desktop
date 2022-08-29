@@ -4,7 +4,7 @@ import { PathOptions } from '../svg-dict';
 
 export const path = (props: PathOptions) => (
   <g id="截屏&amp;拖拽图片" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-    <g id="v2.6.0（主持人）截图&amp;隐藏教室截图" transform="translate(-1057.000000, -432.000000)">
+    <g id="v2.6.0（主持人）截图&amp;隐藏会议截图" transform="translate(-1057.000000, -432.000000)">
       <g id="编组-17" transform="translate(1021.000000, 416.000000)">
         <g id="截屏icon" transform="translate(36.000000, 16.000000)">
           <rect id="矩形" x="0" y="0" width="28" height="28"></rect>

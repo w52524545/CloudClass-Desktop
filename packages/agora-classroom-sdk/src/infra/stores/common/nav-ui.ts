@@ -380,7 +380,8 @@ export class NavigationBarUIStore extends EduUIStoreBase {
     ];
 
     if (AgoraEduSDK.shareUrl) {
-      commonActions.splice(1, 0, shareAction);
+      //隐藏分享URL按钮
+      //commonActions.splice(1, 0, shareAction);
     }
 
     const isInSubRoom = this.classroomStore.groupStore.currentSubRoom;
@@ -388,7 +389,8 @@ export class NavigationBarUIStore extends EduUIStoreBase {
     let actions: EduNavAction<EduNavRecordActionPayload | undefined>[] = [];
     if (EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher) {
       if (!isInSubRoom) {
-        actions = actions.concat(teacherActions);
+        //暂时隐藏录制按钮
+        //actions = actions.concat(teacherActions);
       }
       actions = actions.concat(teacherMediaActions);
     }
@@ -423,7 +425,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 主持人所在房间
+   * 主持人所在会议
    */
   @computed
   get teacherGroupUuid() {
@@ -443,7 +445,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 教室时间信息
+   * 会议时间信息
    * @returns
    */
   @computed
@@ -452,7 +454,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 教室状态
+   * 会议状态
    * @returns
    */
   @computed
@@ -471,7 +473,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 教室持续时间
+   * 会议持续时间
    * @returns
    */
   @computed
@@ -504,7 +506,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
 
   // computed
   /**
-   * 教室状态文字
+   * 会议状态文字
    * @returns
    */
   @computed
@@ -538,7 +540,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
   }
 
   /**
-   * 教室状态文字颜色
+   * 会议状态文字颜色
    * @returns
    */
   @computed
@@ -770,7 +772,7 @@ export class NavigationBarUIStore extends EduUIStoreBase {
       })}`;
   }
   /**
-   * 所在房间名称
+   * 所在会议名称
    */
   @computed
   get currentSubRoomName() {
@@ -851,7 +853,18 @@ export class NavigationBarUIStore extends EduUIStoreBase {
       if (this.classState === ClassState.beforeClass)
         await this.classroomStore.roomStore.updateClassState(ClassState.ongoing);
       else if (this.classState === ClassState.ongoing)
-        await this.classroomStore.roomStore.updateClassState(ClassState.close);
+        this.shareUIStore.addDialog(DialogCategory.ConfirmEndClass, {
+          onOk: () => {
+            if (EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher) {
+              this.classroomStore.roomStore.updateClassState(ClassState.close);
+            } else {
+              return false;
+            }
+          },
+          onCancel: () => {
+            return false;
+          },
+        });
     } catch (e) {
       this.shareUIStore.addGenericErrorDialog(e as AGError);
     }

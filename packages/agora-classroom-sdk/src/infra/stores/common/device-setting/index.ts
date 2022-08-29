@@ -354,6 +354,7 @@ export class DeviceSettingUIStore extends EduUIStoreBase {
    * 是否可设置隐藏/显示讲台区域
    */
   get deviceStage() {
+    return false;
     if (EduClassroomConfig.shared.sessionInfo.role !== EduRoleTypeEnum.teacher) return;
     switch (EduClassroomConfig.shared.sessionInfo.roomType) {
       case EduRoomTypeEnum.Room1v1Class:

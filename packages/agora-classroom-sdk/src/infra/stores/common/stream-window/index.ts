@@ -1237,7 +1237,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
     );
 
     this._disposers.push(
-      // 处理主持人离开教室的逻辑
+      // 处理主持人离开会议的逻辑
       computed(() => this._teacherStream).observe(({ newValue, oldValue }) => {
         if (!newValue && oldValue) {
           this._removeStreamWindowByUuid(oldValue.streamUuid);
