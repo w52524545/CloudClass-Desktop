@@ -10,6 +10,8 @@ export enum AgoraEduClassroomUIEvent {
   toggleWhiteboard = 'toggle-whiteboard',
   dragFileOverBoard = 'drag-file-over-board',
   dropFileOnBoard = 'drop-file-on-board',
+  handleStreamWindow = 'handle-stream-window',
+  handleOffLocalStreamWindow = 'handle-off-local-stream-window',
 }
 
 type EventCallback = (type: AgoraEduClassroomUIEvent, ...args: any[]) => void;

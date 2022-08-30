@@ -216,6 +216,15 @@ export const StreamPlayer: FC<{
     setToolbarVisible(false);
   };
 
+  const wid = style?.width;
+  const hei = style?.height;
+  if (visibleStream(stream.stream.streamUuid)) {
+    style = {
+      width: wid,
+      height: hei,
+      display: 'none',
+    };
+  }
   return (
     <div
       className="fcr-stream-player-container"
@@ -292,7 +301,8 @@ export const CarouselGroup = observer(
       <TransitionGroup className="overflow-auto" style={{ width: '100%', height }}>
         {carouselStreams.map((stream: EduStreamUI, idx: number) => {
           const style = {
-            marginRight: idx === carouselStreams.length - 1 ? 0 : gap - 2,
+            //marginRight: idx === carouselStreams.length - 1 ? 0 : gap - 2,
+            marginTop: 1.5,
           };
 
           const playerStyle = {

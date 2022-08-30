@@ -1,4 +1,5 @@
 import { useStore } from '@/infra/hooks/ui-store';
+import { BoardMountState } from '@/infra/protocol/type';
 import { AgoraEduClassroomUIEvent, EduEventUICenter } from '@/infra/utils/event-center';
 import { extractUserStreams } from '@/infra/utils/extract';
 import {
@@ -648,7 +649,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
         this.streamWindowMap.forEach((value: StreamWindow, streamUuid: string) => {
           if (!value.contain) {
             this._removeStreamWindowByUuid(streamUuid);
-            this._deleteStreamWindowWidegtToServer(streamUuid);
+            //this._deleteStreamWindowWidegtToServer(streamUuid);
           }
         });
       }
@@ -663,14 +664,14 @@ export class StreamWindowUIStore extends EduUIStoreBase {
     if (currentStreamWindow && currentStreamWindow.contain) {
       if (this.stageVisible) {
         this._removeStreamWindowByUuid(streamUuid);
-        this._deleteStreamWindowWidegtToServer(streamUuid);
+        //this._deleteStreamWindowWidegtToServer(streamUuid);
       } else {
         const bounds = this._getTempStreamWindowPosCache(streamUuid);
         currentStreamWindow.information = bounds;
         this._addStreamWindowByUuid(streamUuid, currentStreamWindow);
       }
       this._handleCalculateContains();
-      this.sendWigetDataToServer();
+      //this.sendWigetDataToServer();
     }
   }
 
@@ -836,6 +837,12 @@ export class StreamWindowUIStore extends EduUIStoreBase {
       case AgoraEduClassroomUIEvent.toggleWhiteboard:
         this._handleToggleWhiteboard(args[0]);
         break;
+      case AgoraEduClassroomUIEvent.handleStreamWindow:
+        this._handleStrewamWindow(args[0]);
+        break;
+      case AgoraEduClassroomUIEvent.handleOffLocalStreamWindow:
+        this._handleOffAllLocalStreamWindow();
+        break;
       default:
         break;
     }
@@ -850,6 +857,17 @@ export class StreamWindowUIStore extends EduUIStoreBase {
 
     this._handleCalculateContains(); // 重新计算
     this.sendWigetDataToServer(); //发送消息到远端
+  }
+
+  @action.bound
+  private _handleOffAllLocalStreamWindow() {
+    for (const streamWindow of this.streamWindowMap) {
+      this._removeStreamWindowByUuid(streamWindow[0]);
+      //his._deleteStreamWindowWidegtToServer(streamWindow[0]);
+    }
+
+    this._handleCalculateContains(); // 重新计算
+    //this.sendWigetDataToServer(); //发送消息到远端
   }
 
   @action.bound
@@ -882,19 +900,19 @@ export class StreamWindowUIStore extends EduUIStoreBase {
    */
   @Lodash.debounced(300)
   sendWigetDataToServer(streamUuid?: string) {
-    const { role } = EduClassroomConfig.shared.sessionInfo;
-    if (role === EduRoleTypeEnum.teacher || role === EduRoleTypeEnum.assistant) {
-      const widgetsData = this._encodeWidgetRect();
-      if (streamUuid) {
-        const value = widgetsData.get(streamUuid);
-        this.classroomStore.widgetStore.updateWidgetProperties(`streamWindow-${streamUuid}`, value);
-        return;
-      }
-      widgetsData.forEach((value, streamUuid) => {
-        const widgetUuid = `streamWindow-${streamUuid}`;
-        this.classroomStore.widgetStore.updateWidgetProperties(widgetUuid, value);
-      });
+    //const { role } = EduClassroomConfig.shared.sessionInfo;
+    // if (role === EduRoleTypeEnum.teacher || role === EduRoleTypeEnum.assistant) {
+    const widgetsData = this._encodeWidgetRect();
+    if (streamUuid) {
+      const value = widgetsData.get(streamUuid);
+      this.classroomStore.widgetStore.updateWidgetProperties(`streamWindow-${streamUuid}`, value);
+      return;
     }
+    widgetsData.forEach((value, streamUuid) => {
+      const widgetUuid = `streamWindow-${streamUuid}`;
+      this.classroomStore.widgetStore.updateWidgetProperties(widgetUuid, value);
+    });
+    // }
   }
 
   /**
@@ -902,9 +920,9 @@ export class StreamWindowUIStore extends EduUIStoreBase {
    * @param widgetUuid
    */
   private _deleteStreamWindowWidegtToServer(streamUuid: string) {
-    if (EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher) {
-      this.classroomStore.widgetStore.deleteWidget(`streamWindow-${streamUuid}`);
-    }
+    //if (EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher) {
+    this.classroomStore.widgetStore.deleteWidget(`streamWindow-${streamUuid}`);
+    // }
   }
 
   /**
@@ -1065,6 +1083,41 @@ export class StreamWindowUIStore extends EduUIStoreBase {
   }
 
   @action.bound
+  private _handleStrewamWindow(stream: EduStream) {
+    // 白板关闭并且没有大窗的情况下，添加大窗
+    if (stream && !this.streamWindowMap.size) {
+      const streamwindow = {
+        width: 1,
+        height: 1,
+        x: 0,
+        y: 0,
+        contain: true,
+        zIndex: ZINDEX,
+        userUuid: stream.fromUser.userUuid,
+      };
+      this._addStreamWindowByUuid(stream.streamUuid, new StreamWindowWidget(streamwindow));
+      this.sendWigetDataToServer(stream.streamUuid);
+    }
+  }
+
+  @action.bound
+  _handleStrewamWindow2(stream: EduStream) {
+    // 白板关闭并且没有大窗的情况下，添加大窗
+    if (stream && !this.streamWindowMap.size) {
+      const streamwindow = {
+        width: 1,
+        height: 1,
+        x: 0,
+        y: 0,
+        contain: true,
+        zIndex: ZINDEX,
+        userUuid: stream.fromUser.userUuid,
+      };
+      this._addStreamWindowByUuid(stream.streamUuid, new StreamWindowWidget(streamwindow));
+    }
+  }
+
+  @action.bound
   private _handleToggleWhiteboard(status: boolean) {
     // 白板关闭并且没有大窗的情况下，添加大窗
     if (status && !this.streamWindowMap.size && this._teacherStream) {
@@ -1189,6 +1242,57 @@ export class StreamWindowUIStore extends EduUIStoreBase {
       ),
     );
     this._disposers.push(
+      computed(() => this.classroomStore.streamStore.localShareStreamUuid).observe(
+        ({ newValue, oldValue }) => {
+          if (oldValue && !newValue) {
+            if (this.boardApi.mountState !== BoardMountState.Mounted) {
+              const useruuid = EduClassroomConfig.shared.sessionInfo.userUuid;
+              const streamuuids =
+                this.classroomStore.streamStore.streamByUserUuid.get(useruuid) || new Set();
+              for (const streamUuid of streamuuids) {
+                if (streamUuid !== oldValue) {
+                  const stream = this.classroomStore.streamStore.streamByStreamUuid.get(streamUuid);
+                  EduEventUICenter.shared.emitClassroomUIEvents(
+                    AgoraEduClassroomUIEvent.handleStreamWindow,
+                    stream,
+                  );
+                  return;
+                }
+              }
+            }
+          }
+        },
+      ),
+    );
+    this._disposers.push(
+      reaction(
+        () => this._dataStore.streamWindowMap,
+        () => {
+          if (
+            (!this._dataStore.streamWindowMap.size || this._dataStore.streamWindowMap.size === 0) &&
+            this._teacherStream &&
+            !this.boardApi.mounted &&
+            !this.classroomStore.streamStore.localShareStreamUuid
+          ) {
+            const streamwindow = {
+              width: 1,
+              height: 1,
+              x: 0,
+              y: 0,
+              contain: true,
+              zIndex: ZINDEX,
+              userUuid: this._teacherStream.fromUser.userUuid,
+            };
+            this._addStreamWindowByUuid(
+              this._teacherStream.streamUuid,
+              new StreamWindowWidget(streamwindow),
+            );
+          }
+        },
+      ),
+    );
+
+    this._disposers.push(
       reaction(
         () => this._teacherStream,
         () => {
@@ -1245,7 +1349,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
           this.tempStreamWindowPosMap.delete(oldValue.streamUuid);
         }
 
-        if (!oldValue) {
+        if (!oldValue && EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher) {
           this.boardApi.disable();
           EduEventUICenter.shared.emitClassroomUIEvents(
             AgoraEduClassroomUIEvent.toggleWhiteboard,
@@ -1391,13 +1495,7 @@ class SceneEventHandler {
         } = cause;
 
         // 当操作者角色为主持人的话, 不为当前用户的话
-        if (
-          (RteRole2EduRole(EduRoomTypeEnum.RoomBigClass, operator.role) ===
-            EduRoleTypeEnum.teacher ||
-            RteRole2EduRole(EduRoomTypeEnum.RoomBigClass, operator.role) ===
-              EduRoleTypeEnum.assistant) &&
-          operator.userUuid !== EduClassroomConfig.shared.sessionInfo.userUuid
-        ) {
+        if (operator.userUuid !== EduClassroomConfig.shared.sessionInfo.userUuid) {
           if (actionType === 2) {
             const widgetStreamWindowUuid = widgetUuid.match(/streamWindow-(.*)/);
             if (widgetStreamWindowUuid?.length) {

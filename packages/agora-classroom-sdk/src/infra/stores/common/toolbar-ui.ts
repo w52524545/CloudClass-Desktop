@@ -1,4 +1,4 @@
-import { FcrBoardShape, FcrBoardTool } from '@/infra/protocol/type';
+import { BoardMountState, FcrBoardShape, FcrBoardTool } from '@/infra/protocol/type';
 import { dataURIToFile } from '@/infra/utils';
 import { AgoraEduClassroomUIEvent, EduEventUICenter } from '@/infra/utils/event-center';
 import { listenChannelMessage, sendToMainProcess } from '@/infra/utils/ipc';
@@ -13,6 +13,7 @@ import {
   EduErrorCenter,
   EduRoleTypeEnum,
   EduRoomTypeEnum,
+  EduStream,
   iterateMap,
 } from 'agora-edu-core';
 import {
@@ -39,6 +40,7 @@ import {
 import { rgbToHexColor } from '../../utils/board-utils';
 import { conversionOption, fileExt2ContentType } from './cloud-drive/helper';
 import { transI18n } from '~ui-kit';
+import { EduLectureH5UIStore } from '../lecture-h5';
 
 export class ToolbarUIStore extends EduUIStoreBase {
   readonly defaultColors = [
@@ -231,7 +233,6 @@ export class ToolbarUIStore extends EduUIStoreBase {
   get isScreenSharing() {
     return this._activeCabinetItems.has(CabinetItemEnum.ScreenShare);
   }
-
   /**
    * 是否打开白板
    * @returns
@@ -307,7 +308,23 @@ export class ToolbarUIStore extends EduUIStoreBase {
       this.shareUIStore.addToast(transI18n('toast2.screen_permission_denied'), 'warning');
     }
     if (this.isScreenSharing) {
+      const streamsharuuid = this.classroomStore.streamStore.localShareStreamUuid;
       this.classroomStore.mediaStore.stopScreenShareCapture();
+      /* if (this.boardApi.mountState !== BoardMountState.Mounted) {
+        const useruuid = EduClassroomConfig.shared.sessionInfo.userUuid;
+        const streamuuids =
+          this.classroomStore.streamStore.streamByUserUuid.get(useruuid) || new Set();
+        for (const streamUuid of streamuuids) {
+          if (streamUuid !== streamsharuuid) {
+            const stream = this.classroomStore.streamStore.streamByStreamUuid.get(streamUuid);
+            EduEventUICenter.shared.emitClassroomUIEvents(
+              AgoraEduClassroomUIEvent.handleStreamWindow,
+              stream,
+            );
+            return;
+          }
+        }
+      }*/
     } else {
       if (this.classroomStore.mediaStore.isScreenDeviceEnumerateSupported()) {
         this.selectScreenShareDevice();
@@ -315,6 +332,9 @@ export class ToolbarUIStore extends EduUIStoreBase {
         //not supported, start directly
         this.classroomStore.mediaStore.startScreenShareCapture();
       }
+      try {
+        EduEventUICenter.shared.emitClassroomUIEvents(AgoraEduClassroomUIEvent.offStreamWindow); // stream window off event
+      } catch (e) {}
     }
   }
   async selectScreenShareDevice() {

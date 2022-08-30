@@ -34,6 +34,7 @@ import { interactionThrottleHandler } from '@/infra/utils/interaction';
 import { SvgIconEnum, TooltipPlacement, transI18n } from '~ui-kit';
 import { extractStreamBySourceType, extractUserStreams } from '@/infra/utils/extract';
 import { AgoraEduClassroomUIEvent, EduEventUICenter } from '@/infra/utils/event-center';
+import { BoardMountState } from '@/infra/protocol/type';
 
 export enum StreamIconColor {
   active = '#357bf6',
@@ -230,14 +231,8 @@ export class StreamUIStore extends EduUIStoreBase {
   }
 
   @computed get screenShareStream(): EduStream | undefined {
-    try {
-      EduEventUICenter.shared.emitClassroomUIEvents(AgoraEduClassroomUIEvent.offStreamWindow); // stream window off event
-    } catch (e) {
-      this.shareUIStore.addGenericErrorDialog(e as AGError);
-    }
     const streamUuid = this.classroomStore.roomStore.screenShareStreamUuid as string;
-    const stream = this.classroomStore.streamStore.streamByStreamUuid.get(streamUuid);
-    return stream;
+    return this.classroomStore.streamStore.streamByStreamUuid.get(streamUuid);
   }
 
   /**
@@ -805,7 +800,24 @@ export class StreamUIStore extends EduUIStoreBase {
         this.classroomStore.remoteControlStore.quitControlRequest();
       }
     } else {
-      return this.classroomStore.mediaStore.stopScreenShareCapture();
+      const streamsharuuid = this.classroomStore.streamStore.localShareStreamUuid;
+      const bol = this.classroomStore.mediaStore.stopScreenShareCapture();
+      /*if (this.boardApi.mountState !== BoardMountState.Mounted) {
+        const useruuid = EduClassroomConfig.shared.sessionInfo.userUuid;
+        const streamuuids =
+          this.classroomStore.streamStore.streamByUserUuid.get(useruuid) || new Set();
+        for (const streamUuid of streamuuids) {
+          if (streamUuid !== streamsharuuid) {
+            const stream = this.classroomStore.streamStore.streamByStreamUuid.get(streamUuid);
+            EduEventUICenter.shared.emitClassroomUIEvents(
+              AgoraEduClassroomUIEvent.handleStreamWindow,
+              stream,
+            );
+            return;
+          }
+        }
+      }*/
+      return bol;
     }
   }
 

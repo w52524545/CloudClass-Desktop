@@ -14,6 +14,7 @@ import { action, computed, IReactionDisposer, observable, reaction, runInAction,
 import { EduUIStoreBase } from './base';
 import uuidv4 from 'uuid';
 import { transI18n } from '~ui-kit';
+import { AgoraEduClassroomUIEvent, EduEventUICenter } from '@/infra/utils/event-center';
 
 export enum GroupMethod {
   AUTO,
@@ -772,8 +773,16 @@ export class GroupUIStore extends EduUIStoreBase {
       reaction(
         () => this.boardApi.mounted,
         (mounted) => {
-          if (mounted && this.boardApi.hasPrivilege()) {
-            this._copyRoomContent();
+          if (mounted) {
+            if (this.boardApi.hasPrivilege()) this._copyRoomContent();
+            try {
+              EduEventUICenter.shared.emitClassroomUIEvents(
+                AgoraEduClassroomUIEvent.offStreamWindow,
+              ); // stream window off event
+            } catch (e) {
+              console.error(e);
+              //this.shareUIStore.addGenericErrorDialog(e as AGError);
+            }
           }
         },
       ),

@@ -17,6 +17,8 @@ import { RemoteControlBarUIParams } from '../type';
 import { ChannelType, IPCMessageType } from '@/infra/utils/ipc-channels';
 import { ControlState } from './type';
 import { transI18n } from '~ui-kit';
+import { AgoraEduClassroomUIEvent, EduEventUICenter } from '@/infra/utils/event-center';
+import { BoardMountState } from '@/infra/protocol/type';
 
 export class RemoteControlUIStore extends EduUIStoreBase {
   private _disposers: (() => void)[] = [];
@@ -125,6 +127,7 @@ export class RemoteControlUIStore extends EduUIStoreBase {
             },
           ),
         );
+
         this._disposers.push(
           reaction(
             () => ({
