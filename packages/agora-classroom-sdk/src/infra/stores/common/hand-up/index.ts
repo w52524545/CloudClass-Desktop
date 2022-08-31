@@ -188,7 +188,7 @@ export class HandUpUIStore extends EduUIStoreBase {
     const waveArmList = this.classroomStore.roomStore.waveArmList;
     const acceptedList = this.classroomStore.roomStore.acceptedList;
 
-    const userWaveArmList = waveArmList.reduce<UserWaveArmInfo[]>((list, waveArmItem) => {
+    return waveArmList.reduce<UserWaveArmInfo[]>((list, waveArmItem) => {
       const isOnPodiuming = acceptedList.some((item) => {
         return item.userUuid === waveArmItem.userUuid;
       });
@@ -199,8 +199,6 @@ export class HandUpUIStore extends EduUIStoreBase {
       });
       return list;
     }, []);
-
-    return userWaveArmList;
   }
 
   /**
