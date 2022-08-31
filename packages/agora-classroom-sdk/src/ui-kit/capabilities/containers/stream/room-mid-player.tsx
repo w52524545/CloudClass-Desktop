@@ -20,9 +20,7 @@ export const RoomMidStreamsContainer = observer(() => {
     <div
       id="stage-container"
       className={`w-full flex-grow flex-shrink-0 ${stageVisible ? '' : 'hidden'}`}>
-      <div
-        style={{ overflowX: 'hidden', overflowY: 'auto' }}
-        className="h-full justify-center items-center relative">
+      <div style={{ overflow: 'hidden' }} className="h-full justify-center items-center relative">
         {!(
           teacherCameraStream?.stream.streamUuid &&
           visibleStream(teacherCameraStream?.stream.streamUuid)

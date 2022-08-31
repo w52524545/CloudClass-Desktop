@@ -1291,21 +1291,6 @@ export class StreamWindowUIStore extends EduUIStoreBase {
         },
       ),
     );
-
-    this._disposers.push(
-      reaction(
-        () => this._teacherStream,
-        () => {
-          // 主持人流存在
-          if (this._teacherStream) {
-            EduEventUICenter.shared.emitClassroomUIEvents(
-              AgoraEduClassroomUIEvent.toggleWhiteboard,
-              true,
-            );
-          }
-        },
-      ),
-    );
     this._disposers.push(
       // 只控制上下台逻辑的变更
       // 需修改为监听下上台逻辑
@@ -1351,6 +1336,11 @@ export class StreamWindowUIStore extends EduUIStoreBase {
 
         if (!oldValue && EduClassroomConfig.shared.sessionInfo.role === EduRoleTypeEnum.teacher) {
           this.boardApi.disable();
+          EduEventUICenter.shared.emitClassroomUIEvents(
+            AgoraEduClassroomUIEvent.toggleWhiteboard,
+            true,
+          );
+        } else if (!oldValue && newValue) {
           EduEventUICenter.shared.emitClassroomUIEvents(
             AgoraEduClassroomUIEvent.toggleWhiteboard,
             true,
