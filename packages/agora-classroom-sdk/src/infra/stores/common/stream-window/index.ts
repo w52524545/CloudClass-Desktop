@@ -618,6 +618,7 @@ export class StreamWindowUIStore extends EduUIStoreBase {
       );
       return;
     }
+    if (this.classroomStore.streamStore.localShareStreamUuid) return;
     this.handleStreamWindowContain(stream);
   }
 
