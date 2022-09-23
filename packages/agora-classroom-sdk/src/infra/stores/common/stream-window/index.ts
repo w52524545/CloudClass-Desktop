@@ -26,7 +26,7 @@ import { DraggableData } from 'react-draggable';
 import { transI18n } from '~ui-kit';
 import { EduUIStoreBase } from '../base';
 import { StreamBounds } from '../stream/struct';
-import { WidgetTrackStruct } from '../type';
+import { CabinetItemEnum, WidgetTrackStruct } from '../type';
 import {
   calculateSize,
   calculateSizeSquare,
@@ -607,7 +607,6 @@ export class StreamWindowUIStore extends EduUIStoreBase {
   handleDBClickStreamWindow(stream: EduStream) {
     const streamUuid = stream.streamUuid;
     const currentStreamWindow = this.streamWindowMap.get(streamUuid);
-
     // 1、添加 streamwindow 窗口是否是全屏窗口并做数量判断
     if (
       !currentStreamWindow?.contain &&
@@ -618,7 +617,6 @@ export class StreamWindowUIStore extends EduUIStoreBase {
       );
       return;
     }
-    if (this.classroomStore.streamStore.localShareStreamUuid) return;
     this.handleStreamWindowContain(stream);
   }
 
@@ -1342,10 +1340,13 @@ export class StreamWindowUIStore extends EduUIStoreBase {
             true,
           );
         } else if (!oldValue && newValue) {
-          EduEventUICenter.shared.emitClassroomUIEvents(
-            AgoraEduClassroomUIEvent.toggleWhiteboard,
-            true,
-          );
+          if (
+            !this.classroomStore.toolBarUIStore.activeCabinetItems.has(CabinetItemEnum.ScreenShare)
+          )
+            EduEventUICenter.shared.emitClassroomUIEvents(
+              AgoraEduClassroomUIEvent.toggleWhiteboard,
+              true,
+            );
         }
       }),
     );

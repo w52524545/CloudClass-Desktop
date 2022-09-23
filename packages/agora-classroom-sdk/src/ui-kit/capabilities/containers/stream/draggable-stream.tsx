@@ -69,11 +69,12 @@ export const DragableStream = observer(
     style?: CSSProperties;
     playerStyle?: CSSProperties;
   }) => {
-    const { streamWindowUIStore } = useStore();
+    const { streamWindowUIStore, streamUIStore } = useStore();
     const { streamDragable, handleDBClickStreamWindow } = streamWindowUIStore;
 
+    const { screenShareStream } = streamUIStore;
     const handleStreamDoubleClick = () => {
-      streamDragable && stream && handleDBClickStreamWindow(stream.stream);
+      !screenShareStream && streamDragable && stream && handleDBClickStreamWindow(stream.stream);
     };
     return stream ? (
       <div style={{ position: 'relative', ...style }} onDoubleClick={handleStreamDoubleClick}>

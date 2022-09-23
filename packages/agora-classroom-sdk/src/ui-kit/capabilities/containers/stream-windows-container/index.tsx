@@ -152,7 +152,8 @@ const DragableStreamWindow = observer(
     style?: CSSProperties;
   }) => {
     const { streamWindowUIStore, streamUIStore } = useStore();
-    const { allUIStreams, fullScreenToolbarOffset, fullScreenToolbarPlacement } = streamUIStore;
+    const { screenShareStream, allUIStreams, fullScreenToolbarOffset, fullScreenToolbarPlacement } =
+      streamUIStore;
 
     const {
       handleStreamWindowInfo,
